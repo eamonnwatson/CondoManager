@@ -1,9 +1,6 @@
 ﻿using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace CondoManager.Domain.Errors;
+namespace CondoScope.Domain.Errors;
 
 public class InvalidPhoneNumber : Error
 {
@@ -12,7 +9,7 @@ public class InvalidPhoneNumber : Error
     {
         PhoneNumber = phoneNumber;
 
-        WithMetadata("ErrorCode", "INVALID_PHONE_NUMBER");
+        WithMetadata("ErrorCode", "DOM_INVALID_PHONE_NUMBER");
         WithMetadata("TimeStamp", DateTime.UtcNow);
     }
 

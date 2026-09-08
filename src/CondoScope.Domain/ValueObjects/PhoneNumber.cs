@@ -1,8 +1,8 @@
-﻿using CondoManager.Domain.Errors;
+﻿using CondoScope.Domain.Errors;
 using FluentResults;
 using System.Text.RegularExpressions;
 
-namespace CondoManager.Domain.ValueObjects;
+namespace CondoScope.Domain.ValueObjects;
 
 public sealed partial record PhoneNumber
 {

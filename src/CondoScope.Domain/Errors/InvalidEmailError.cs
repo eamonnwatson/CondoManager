@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace CondoManager.Domain.Errors;
+namespace CondoScope.Domain.Errors;
 
 public class InvalidEmailError : Error
 {
@@ -9,7 +9,7 @@ public class InvalidEmailError : Error
     {
         Email = email;
 
-        WithMetadata("ErrorCode", "INVALID_EMAIL");
+        WithMetadata("ErrorCode", "DOM_INVALID_EMAIL");
         WithMetadata("TimeStamp", DateTime.UtcNow);
     }
 

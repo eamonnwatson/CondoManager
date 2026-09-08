@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CondoManager.Domain.Common;
+namespace CondoScope.Domain.Common;
 
 public abstract class BaseAuditableEntity(Ulid id, DateTime createdAt, string createdBy) : IEquatable<BaseAuditableEntity>
 {

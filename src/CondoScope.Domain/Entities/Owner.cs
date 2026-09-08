@@ -1,13 +1,13 @@
-﻿using CondoManager.Domain.Common;
-using CondoManager.Domain.ValueObjects;
+﻿using CondoScope.Domain.Common;
+using CondoScope.Domain.ValueObjects;
 using FluentResults;
 
-namespace CondoManager.Domain.Entities;
+namespace CondoScope.Domain.Entities;
 
 public class Owner : BaseAuditableEntity
 {
-    private Owner(Ulid id, string name, Email? email, PhoneNumber? phone, DateTime createdAt, string createdBy)
-        : base(id, createdAt, createdBy)
+    private Owner(string name, Email? email, PhoneNumber? phone, DateTime createdAt, string createdBy)
+        : base(Ulid.NewUlid(), createdAt, createdBy)
     {
         Name = name;
         Email = email;
@@ -22,9 +22,6 @@ public class Owner : BaseAuditableEntity
 
     public static Result<Owner> Create(string name, Email? email, PhoneNumber? phone, string createdBy)
     {
-        var id = Ulid.NewUlid();
-        var createdAt = DateTime.UtcNow;
-        var owner = new Owner(id, name, email, phone, createdAt, createdBy);
-        return owner;
+        return new Owner(name, email, phone, DateTime.UtcNow, createdBy);
     }
 }

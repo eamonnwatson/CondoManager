@@ -1,4 +1,4 @@
-﻿namespace CondoManager.Domain.Enums;
+﻿namespace CondoScope.Domain.Enums;
 
 public enum ChargeCategory
 {

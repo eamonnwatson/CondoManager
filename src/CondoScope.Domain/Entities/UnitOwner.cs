@@ -1,10 +1,10 @@
-﻿using CondoManager.Domain.Common;
+﻿using CondoScope.Domain.Common;
 
-namespace CondoManager.Domain.Entities;
+namespace CondoScope.Domain.Entities;
 
 public class UnitOwner : BaseAuditableEntity
 {
-    protected UnitOwner(Unit unit, Owner owner, DateOnly effectiveFrom, DateOnly? effectiveTo, DateTime createdAt, string createdBy)
+    internal UnitOwner(Unit unit, Owner owner, DateOnly effectiveFrom, DateOnly? effectiveTo, DateTime createdAt, string createdBy)
         : base(Ulid.NewUlid(), createdAt, createdBy)
     {
         Unit = unit;
