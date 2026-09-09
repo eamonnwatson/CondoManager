@@ -3,6 +3,10 @@
     <File Path=".editorconfig" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/CondoScope.Application/CondoScope.Application.csproj" Id="aaedbd5a-2a82-4ad0-92a2-9d519714e2d3" />
     <Project Path="src/CondoScope.Domain/CondoScope.Domain.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CondoScope.Domain.UnitTests/CondoScope.Domain.UnitTests.csproj" Id="83ba179e-e58d-4a2c-bf5e-775fa55e41ba" />
   </Folder>
 </Solution>

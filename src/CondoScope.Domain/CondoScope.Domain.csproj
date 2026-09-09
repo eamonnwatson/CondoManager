@@ -11,4 +11,8 @@
     <PackageReference Include="Ulid" Version="1.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="CondoScope.Domain.UnitTests" />
+  </ItemGroup>
+
 </Project>
