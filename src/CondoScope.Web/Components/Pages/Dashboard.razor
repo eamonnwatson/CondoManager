@@ -1,0 +1,53 @@
+﻿@page "/"
+
+<PageTitle>Dashboard</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">Dashboard</MudText>
+
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle2" Color="Color.Secondary">Total Units</MudText>
+                <MudText Typo="Typo.h5">2</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle2" Color="Color.Secondary">Collected</MudText>
+                <MudText Typo="Typo.h5">$0.00</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle2" Color="Color.Secondary">Outstanding</MudText>
+                <MudText Typo="Typo.h5">$0.00</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudText Typo="Typo.subtitle2" Color="Color.Secondary">Collection %</MudText>
+                <MudText Typo="Typo.h5">0.0%</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudText Typo="Typo.h6" Class="mt-8 mb-2">Charges Assessed</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Style="max-width: 700px;">
+        <thead>
+            <tr>
+                <th>Monthly Charges</th>
+                <th>Reserve Charges</th>
+                <th>Other Charges</th>
+                <th>Total Charges</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>$0.00</td>
+                <td>$0.00</td>
+                <td>$0.00</td>
+                <td><strong>$0.00</strong></td>
+            </tr>
+        </tbody>
+    </MudSimpleTable>
+
