@@ -5,8 +5,11 @@
   <Folder Name="/src/">
     <Project Path="src/CondoScope.Application/CondoScope.Application.csproj" Id="aaedbd5a-2a82-4ad0-92a2-9d519714e2d3" />
     <Project Path="src/CondoScope.Domain/CondoScope.Domain.csproj" />
+    <Project Path="src/CondoScope.Persistence/CondoScope.Persistence.csproj" Id="5327461c-ceba-44a1-9824-0031be0e6c8f" />
+    <Project Path="src/CondoScope.Web/CondoScope.Web.csproj" Id="4d44fb3c-7c97-434e-8d7e-d5d21042f354" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/CondoScope.Domain.UnitTests/CondoScope.Domain.UnitTests.csproj" Id="83ba179e-e58d-4a2c-bf5e-775fa55e41ba" />
+    <Project Path="tests/CondoScope.Persistence.IntegrationTests/CondoScope.Persistence.IntegrationTests.csproj" />
   </Folder>
 </Solution>
