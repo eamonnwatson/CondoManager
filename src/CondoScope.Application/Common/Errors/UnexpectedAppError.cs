@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CondoScope.Application.Common.Errors;
 
-internal class UnexpectedAppError : ExceptionalError
+public class UnexpectedAppError : ExceptionalError
 {
     public UnexpectedAppError(Exception ex) : base($"An unexpected error occurred.", ex)
     {
