@@ -6,6 +6,11 @@ namespace CondoScope.Domain.Entities;
 
 public class Unit : BaseAuditableEntity
 {
+    private Unit()
+    {
+        UnitNumber = null!;
+    }
+
     private Unit(string unitNumber, string? address, bool isActive, DateTime createdAt, string createdBy)
         : base(Ulid.NewUlid(), createdAt, createdBy)
     {
@@ -18,8 +23,15 @@ public class Unit : BaseAuditableEntity
     public string? Address { get; set; }
     public bool IsActive { get; set; }
 
-    private readonly SortedList<DateOnly, UnitOwner> unitOwners = [];
-    public IReadOnlyCollection<UnitOwner> UnitOwners => unitOwners.Values.AsReadOnly();
+    private readonly List<UnitOwner> unitOwners = [];
+    public IReadOnlyCollection<UnitOwner> UnitOwners => unitOwners.AsReadOnly();
+    public Owner? CurrentOwner => unitOwners.LastOrDefault()?.Owner;
+
+    private readonly List<Payment> payments = [];
+    public IReadOnlyCollection<Payment> Payments => payments.AsReadOnly();
+
+    private readonly List<FeeCharge> feeCharges = [];
+    public IReadOnlyCollection<FeeCharge> FeeCharges => feeCharges.AsReadOnly();
 
     public static Result<Unit> Create(string unitNumber, string? address, bool isActive, string createdBy)
     {
@@ -28,11 +40,17 @@ public class Unit : BaseAuditableEntity
 
     public Result AssignOwner(Owner owner, DateOnly effectiveDate, string assignedBy)
     {
+        if (owner.UnitOwner is not null && owner.UnitOwner.UnitId != Id)
+            return Result.Fail(new OwnerAlreadyAssigned(owner.Id, owner.UnitOwner.UnitId));
+
         if (unitOwners.Count > 0)
         {
-            var lastOwner = unitOwners.Values[^1];
+            var lastOwner = unitOwners[^1];
             if (lastOwner.EffectiveFrom > effectiveDate)
                 return Result.Fail(new InvalidEffectiveDate(effectiveDate));
+
+            if (lastOwner.EffectiveFrom == effectiveDate)
+                throw new ArgumentException($"An item with the same key has already been added. Key: {effectiveDate}", nameof(effectiveDate));
 
             if (lastOwner.EffectiveTo is null)
             {
@@ -43,7 +61,8 @@ public class Unit : BaseAuditableEntity
         }
 
         var unitOwner = new UnitOwner(this, owner, effectiveDate, null, DateTime.UtcNow, assignedBy);
-        unitOwners.Add(effectiveDate, unitOwner);
+        unitOwners.Add(unitOwner);
+        owner.SetUnitOwner(unitOwner);
 
         return Result.Ok();
     }

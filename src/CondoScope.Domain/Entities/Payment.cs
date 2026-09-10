@@ -6,6 +6,11 @@ namespace CondoScope.Domain.Entities;
 
 public class Payment : BaseAuditableEntity
 {
+    private Payment()
+    {
+        Unit = null!;
+    }
+
     private Payment(DateOnly paymentDate, Unit unit, decimal amount, PaymentMethod method, string? reference, string? notes,
                     DateTime createdAt, string createdBy) : base(Ulid.NewUlid(), createdAt, createdBy)
     {

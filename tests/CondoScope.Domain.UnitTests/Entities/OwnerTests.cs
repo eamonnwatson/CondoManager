@@ -79,26 +79,12 @@ public class OwnerTests
     }
 
     [TestMethod]
-    public void UnitOwners_WhenCreated_IsEmpty()
+    public void UnitOwner_WhenCreated_IsNull()
     {
         // Act
         var result = Owner.Create("Name", null, null, "creator");
 
         // Assert
-        Assert.IsNotNull(result.Value.UnitOwners);
-        Assert.IsEmpty(result.Value.UnitOwners);
-    }
-
-    [TestMethod]
-    public void UnitOwners_ReturnsSameInstanceType_IsReadOnlyCollection()
-    {
-        // Arrange
-        var result = Owner.Create("Name", null, null, "creator");
-
-        // Act
-        var unitOwners = result.Value.UnitOwners;
-
-        // Assert
-        Assert.IsInstanceOfType<IReadOnlyCollection<UnitOwner>>(unitOwners);
+        Assert.IsNull(result.Value.UnitOwner);
     }
 }

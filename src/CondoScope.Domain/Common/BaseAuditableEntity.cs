@@ -4,6 +4,10 @@ namespace CondoScope.Domain.Common;
 
 public abstract class BaseAuditableEntity(Ulid id, DateTime createdAt, string createdBy) : IEquatable<BaseAuditableEntity>
 {
+    protected BaseAuditableEntity() : this(default, default, null!)
+    {
+    }
+
     public Ulid Id { get; init; } = id;
     public DateTime CreatedAtUtc { get; init; } = createdAt;
     public string CreatedBy { get; init; } = createdBy;

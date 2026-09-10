@@ -4,6 +4,12 @@ namespace CondoScope.Domain.Entities;
 
 public class UnitOwner : BaseAuditableEntity
 {
+    private UnitOwner()
+    {
+        Unit = null!;
+        Owner = null!;
+    }
+
     internal UnitOwner(Unit unit, Owner owner, DateOnly effectiveFrom, DateOnly? effectiveTo, DateTime createdAt, string createdBy)
         : base(Ulid.NewUlid(), createdAt, createdBy)
     {

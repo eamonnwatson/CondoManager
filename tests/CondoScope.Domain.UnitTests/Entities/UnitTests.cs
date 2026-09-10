@@ -172,4 +172,47 @@ public class UnitTests
 
         Assert.ThrowsExactly<ArgumentException>(() => unit.AssignOwner(owner2, sameDate, "assigner2"));
     }
+
+    [TestMethod]
+    public void AssignOwner_WhenOwnerAlreadyAssignedToDifferentUnit_ReturnsFailureWithOwnerAlreadyAssigned()
+    {
+        // Arrange
+        var unit1 = CreateUnit("101");
+        var unit2 = CreateUnit("102");
+        var owner = CreateOwner();
+        var firstDate = new DateOnly(2024, 1, 1);
+        var secondDate = new DateOnly(2024, 6, 1);
+
+        unit1.AssignOwner(owner, firstDate, "assigner1");
+
+        // Act
+        var result = unit2.AssignOwner(owner, secondDate, "assigner2");
+
+        // Assert
+        Assert.IsTrue(result.IsFailed);
+        Assert.IsEmpty(unit2.UnitOwners);
+        Assert.IsInstanceOfType<OwnerAlreadyAssigned>(result.Errors[0]);
+        var error = (OwnerAlreadyAssigned)result.Errors[0];
+        Assert.AreEqual(owner.Id, error.OwnerId);
+        Assert.AreEqual(unit1.Id, error.ExistingUnitId);
+    }
+
+    [TestMethod]
+    public void AssignOwner_WhenReassigningSameOwnerToSameUnit_Succeeds()
+    {
+        // Arrange
+        var unit = CreateUnit();
+        var owner = CreateOwner();
+        var firstDate = new DateOnly(2024, 1, 1);
+        var secondDate = new DateOnly(2024, 6, 1);
+
+        unit.AssignOwner(owner, firstDate, "assigner1");
+
+        // Act
+        var result = unit.AssignOwner(owner, secondDate, "assigner2");
+
+        // Assert
+        Assert.IsTrue(result.IsSuccess);
+        Assert.HasCount(2, unit.UnitOwners);
+    }
 }
