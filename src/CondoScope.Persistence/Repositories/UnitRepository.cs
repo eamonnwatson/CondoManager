@@ -1,0 +1,20 @@
+﻿using CondoScope.Application.Common.Interfaces;
+using CondoScope.Domain.Entities;
+using FluentResults;
+using Microsoft.EntityFrameworkCore;
+
+namespace CondoScope.Persistence.Repositories;
+
+internal class UnitRepository(AppDbContext dbContext) : BaseRepository, IUnitsRepository
+{
+    private readonly AppDbContext dbContext = dbContext;
+
+    public Task<Result<IReadOnlyList<Unit>>> GetAllWithDetailsAsync(CancellationToken token) =>
+        ExecuteAsync(async () => (IReadOnlyList<Unit>)await dbContext.Units
+            .Include(u => u.UnitOwners)
+                .ThenInclude(uo => uo.Owner)
+            .Include(u => u.Payments)
+            .Include(u => u.FeeCharges)
+            .ToListAsync(token));
+
+}

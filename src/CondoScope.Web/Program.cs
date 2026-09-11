@@ -1,8 +1,12 @@
+using CondoScope.Application.Ledger.Queries.GetLedger;
+using CondoScope.Persistence;
 using CondoScope.Web.Components;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetLedgerQuery).Assembly));
+builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddMudServices();
 
 // Add services to the container.
@@ -11,6 +15,8 @@ builder.Services.AddRazorComponents()
 
 
 var app = builder.Build();
+
+await app.Services.ApplyPersistenceAsync();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
