@@ -1,0 +1,45 @@
+﻿@page "/units"
+@using CondoScope.Application.Units.Queries
+@using MediatR
+
+<MudCard>
+    <MudCardHeader Class="primary-card">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Owners</MudText>
+            <MudText Typo="Typo.body1">Manage owner contact information for all condominium owners.</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body2" Class="pb-1">Showing @units.Count units</MudText>
+        <MudTable Items="units" Elevation="0" Class="primary-table">
+            <HeaderContent>
+                <MudTh>Unit Number</MudTh>
+                <MudTh>Address</MudTh>
+                <MudTh>Current Owner</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.UnitNumber</MudTd>
+                <MudTd>@context.Address</MudTd>
+                <MudTd>@context.CurrentOwnerName</MudTd>
+            </RowTemplate>
+        </MudTable>
+        <MudGrid>
+            <MudItem xs="12" Class="d-flex justify-end">
+                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Unit</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Inject] private IMediator Mediator { get; set; } = default!;
+    private IReadOnlyList<UnitDto> units = default!;
+
+    override protected async Task OnInitializedAsync()
+    {
+        var unitResult = await Mediator.Send(new GetUnitsQuery());
+        units = unitResult.Value;
+    }
+
+}
