@@ -11,7 +11,7 @@ public class Unit : BaseAuditableEntity
         UnitNumber = null!;
     }
 
-    private Unit(string unitNumber, string? address, bool isActive, DateTime createdAt, string createdBy)
+    private Unit(string unitNumber, string address, bool isActive, DateTime createdAt, string createdBy)
         : base(Ulid.NewUlid(), createdAt, createdBy)
     {
         UnitNumber = unitNumber;
@@ -20,7 +20,7 @@ public class Unit : BaseAuditableEntity
     }
 
     public string UnitNumber { get; set; }
-    public string? Address { get; set; }
+    public string Address { get; set; }
     public bool IsActive { get; set; }
 
     private readonly List<UnitOwner> unitOwners = [];
@@ -33,7 +33,7 @@ public class Unit : BaseAuditableEntity
     private readonly List<FeeCharge> feeCharges = [];
     public IReadOnlyCollection<FeeCharge> FeeCharges => feeCharges.AsReadOnly();
 
-    public static Result<Unit> Create(string unitNumber, string? address, bool isActive, string createdBy)
+    public static Result<Unit> Create(string unitNumber, string address, bool isActive, string createdBy)
     {
         return new Unit(unitNumber, address, isActive, DateTime.UtcNow, createdBy);
     }

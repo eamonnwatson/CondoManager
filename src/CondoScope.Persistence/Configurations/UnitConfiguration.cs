@@ -20,7 +20,8 @@ public class UnitConfiguration : IEntityTypeConfiguration<Unit>
             .IsRequired();
 
         builder.Property(u => u.Address)
-            .HasMaxLength(300);
+            .HasMaxLength(300)
+            .IsRequired();
 
         builder.Property(u => u.IsActive)
             .IsRequired();

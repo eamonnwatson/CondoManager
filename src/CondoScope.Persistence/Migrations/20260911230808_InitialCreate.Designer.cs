@@ -183,6 +183,7 @@ namespace CondoScope.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("TEXT");
 

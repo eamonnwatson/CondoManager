@@ -57,7 +57,7 @@ namespace CondoScope.Persistence.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     UnitNumber = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    Address = table.Column<string>(type: "TEXT", maxLength: 300, nullable: true),
+                    Address = table.Column<string>(type: "TEXT", maxLength: 300, nullable: false),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: false),
