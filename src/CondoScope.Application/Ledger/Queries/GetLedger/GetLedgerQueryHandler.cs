@@ -24,10 +24,10 @@ public class GetLedgerQueryHandler(IUnitsRepository unitsRepository) : IRequestH
 
     private LedgerDTO MapUnitDetailsToLedger(Domain.Entities.Unit unit)
     {
-
-        var condoFees = unit.FeeCharges.Where(fc => fc.Category == Domain.Enums.ChargeCategory.CondoFee).Sum(fc => fc.Amount);
-        var reserveFund = unit.FeeCharges.Where(fc => fc.Category == Domain.Enums.ChargeCategory.ReserveFee).Sum(fc => fc.Amount);
-        var otherCharges = unit.FeeCharges.Where(fc => fc.Category == Domain.Enums.ChargeCategory.OtherFee).Sum(fc => fc.Amount);
+        var fees = unit.FeeCharges.Where(fc => fc.DueDate <= DateOnly.FromDateTime(DateTime.Today));
+        var condoFees = fees.Where(fc => fc.Category == Domain.Enums.ChargeCategory.CondoFee).Sum(fc => fc.Amount);
+        var reserveFund = fees.Where(fc => fc.Category == Domain.Enums.ChargeCategory.ReserveFee).Sum(fc => fc.Amount);
+        var otherCharges = fees.Where(fc => fc.Category == Domain.Enums.ChargeCategory.OtherFee).Sum(fc => fc.Amount);
         var payments = unit.Payments.Sum(p => p.Amount);
         var balance = (condoFees + reserveFund + otherCharges) - payments;
         var status = balance < 0 ? AccountStatus.Credit : balance > 0 ? AccountStatus.Outstanding : AccountStatus.PaidInFull;

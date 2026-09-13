@@ -6,7 +6,10 @@ using MudBlazor.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetLedgerQuery).Assembly));
-builder.Services.AddPersistence(builder.Configuration);
+
+var dbPath = builder.Configuration.GetConnectionString("CondoScopeDb") ?? Path.Combine(AppContext.BaseDirectory, "condoscope.db");
+
+builder.Services.AddPersistence($"Data Source={dbPath}");
 builder.Services.AddMudServices();
 
 // Add services to the container.

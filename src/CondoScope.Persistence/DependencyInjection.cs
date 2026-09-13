@@ -1,18 +1,16 @@
 using CondoScope.Application.Common.Interfaces;
 using CondoScope.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CondoScope.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, string sqliteConnectionString)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection") ?? "Data Source=condoscope.db";
+        services.AddDbContext<AppDbContext>(options => options.UseSqlite(sqliteConnectionString));
 
-        services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
         services.AddScoped<IOwnersRepository, OwnerRepository>();
         services.AddScoped<IUnitsRepository, UnitRepository>();
 
