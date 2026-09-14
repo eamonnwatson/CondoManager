@@ -3,7 +3,7 @@ using CondoScope.Application.Common.Interfaces;
 using FluentResults;
 using MediatR;
 
-namespace CondoScope.Application.Units.Queries;
+namespace CondoScope.Application.Units.Queries.GetUnits;
 
 internal class GetUnitsQueryHandler(IUnitsRepository unitsRepository) : IRequestHandler<GetUnitsQuery, Result<IReadOnlyList<UnitDto>>>
 {
@@ -18,6 +18,6 @@ internal class GetUnitsQueryHandler(IUnitsRepository unitsRepository) : IRequest
                 Address: unit.Address ?? string.Empty,
                 CurrentOwnerId: unit.CurrentOwner?.Id.ToString() ?? string.Empty,
                 CurrentOwnerName: unit.CurrentOwner?.Name ?? string.Empty
-                )).ToList());
+                )).ToList().AsReadOnly());
     }
 }
