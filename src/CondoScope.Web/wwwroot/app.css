@@ -72,3 +72,7 @@ h1:focus {
 .primary-table .mud-table-head {
     background-color: var(--mud-palette-info);
 }
+
+.mud-simple-table thead th {
+    background-color: var(--mud-palette-info);
+}

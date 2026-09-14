@@ -1,0 +1,50 @@
+﻿@page "/owners"
+@using CondoScope.Application.Owners.Queries.GetOwners
+@using MediatR
+
+<MudCard>
+    <MudCardHeader Class="primary-card">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Owners</MudText>
+            <MudText Typo="Typo.body1">Manage owner contact information for all condominium owners.</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body2" Class="pb-1"></MudText>
+        <MudTable Items="owners" Elevation="0" Class="primary-table">
+            <HeaderContent>
+                <MudTh>Unit</MudTh>
+                <MudTh>Owner</MudTh>
+                <MudTh>Address</MudTh>
+                <MudTh>Email</MudTh>
+                <MudTh>Phone</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.UnitNumber</MudTd>
+                <MudTd>@context.Name</MudTd>
+                <MudTd>@context.Address</MudTd>
+                <MudTd>@context.Email</MudTd>
+                <MudTd>@context.PhoneNumber</MudTd>
+            </RowTemplate>
+        </MudTable>
+        <MudGrid>
+            <MudItem xs="12" Class="d-flex justify-end">
+                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Owner</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Inject] private IDialogService DialogService { get; set; } = default!;
+    [Inject] private IMediator Mediator { get; set; } = default!;
+
+    private IList<OwnerDTO> owners = default!;
+
+    override protected async Task OnInitializedAsync()
+    {
+        var ownerResult = await Mediator.Send(new GetOwnerQuery());
+        owners = ownerResult.Value.ToList();
+    }
+
+}

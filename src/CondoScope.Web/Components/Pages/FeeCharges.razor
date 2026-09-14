@@ -1,0 +1,53 @@
+﻿@page "/fee-schedule"
+@using CondoScope.Application.FeeCharges.Queries.GetFeeCharges
+@using MediatR
+
+<MudCard>
+    <MudCardHeader Class="primary-card">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Fee Schedule</MudText>
+            <MudText Typo="Typo.body1">Configure recurring condo fees and special assessments.</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body2" Class="pb-1"></MudText>
+        <MudTable Items="feeCharges" Elevation="0" Class="primary-table">
+            <HeaderContent>
+                <MudTh>Due Date</MudTh>
+                <MudTh>Description</MudTh>
+                <MudTh>Category</MudTh>
+                <MudTh>Applies To</MudTh>
+                <MudTh>Amount</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.DueDate</MudTd>
+                <MudTd>@context.Description</MudTd>
+                <MudTd>@context.Category</MudTd>
+                <MudTd>@context.AppliesTo</MudTd>
+                <MudTd>@context.Amount</MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+        <MudGrid>
+            <MudItem xs="12" Class="d-flex justify-end">
+                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Fee Charge</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Inject] private IDialogService DialogService { get; set; } = default!;
+    [Inject] private IMediator Mediator { get; set; } = default!;
+
+    private List<FeeChargeDto> feeCharges = default!;
+
+    override protected async Task OnInitializedAsync()
+    {
+        var feeChargeResult = await Mediator.Send(new GetFeeChargesQuery());
+        feeCharges = feeChargeResult.Value.ToList();
+    }
+
+}

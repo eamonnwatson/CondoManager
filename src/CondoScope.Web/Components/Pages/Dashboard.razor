@@ -55,65 +55,81 @@
     </MudItem>
 </MudGrid>
 
-<MudGrid class="mb-4">
+<MudGrid class="d-flex align-stretch mb-4">
 
-    <MudItem xs="12" sm="6">
-        <MudPaper Class="pa-4">
-            <MudText Typo="Typo.h6">Collection Status</MudText>
-            <MudChart T="decimal" ChartType="ChartType.Pie" ChartLabels="chartLabels" ChartSeries="chartValues.AsChartDataSet()" Width="100%" Height="300px" ChartOptions="chartOptions" />
-        </MudPaper>
+    <MudItem xs="12" sm="6" Class="d-flex">
+        <MudCard class="d-flex flex-column flex-grow-1 h-100">
+            <MudCardHeader>
+                <MudText Typo="Typo.h6">Collection Status</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudChart T="decimal" 
+                          ChartType="ChartType.Pie" 
+                          ChartLabels="chartLabels" 
+                          ChartSeries="chartValues.AsChartDataSet()" 
+                          Width="100%" Height="300px" 
+                          ChartOptions="chartOptions" />
+            </MudCardContent>
+        </MudCard>
     </MudItem>
 
-    <MudItem xs="12" sm="6">
-        <MudPaper Class="pa-4">
-
-            <MudText Typo="Typo.h6">Charges Assessed</MudText>
-            <MudSimpleTable Elevation="0">
-                <tbody>
-                    <tr>
-                        <td>Monthly Charges</td>
-                        <td>@ledger.Sum(l => l.CondoFees).ToString("C2")</td>
-                    </tr>
-                    <tr>
-                        <td>Reserve Charges</td>
-                        <td>@ledger.Sum(l => l.ReserveFund).ToString("C2")</td>
-                    </tr>
-                    <tr>
-                        <td>Other Charges</td>
-                        <td>@ledger.Sum(l => l.OtherCharges).ToString("C2")</td>
-                    </tr>
-                    <tr>
-                        <td>Total Charges</td>
-                        <td>@ledger.Sum(l => l.CondoFees + l.ReserveFund + l.OtherCharges).ToString("C2")</td>
-                    </tr>
-                </tbody>
-            </MudSimpleTable>
-        </MudPaper>
+    <MudItem xs="12" sm="6" Class="d-flex">
+        <MudCard class="d-flex flex-column flex-grow-1 h-100">
+            <MudCardHeader>
+                <MudText Typo="Typo.h6">Charges Assessed</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudSimpleTable Elevation="0">
+                    <tbody>
+                        <tr>
+                            <td>Monthly Charges</td>
+                            <td>@ledger.Sum(l => l.CondoFees).ToString("C2")</td>
+                        </tr>
+                        <tr>
+                            <td>Reserve Charges</td>
+                            <td>@ledger.Sum(l => l.ReserveFund).ToString("C2")</td>
+                        </tr>
+                        <tr>
+                            <td>Other Charges</td>
+                            <td>@ledger.Sum(l => l.OtherCharges).ToString("C2")</td>
+                        </tr>
+                        <tr>
+                            <td>Total Charges</td>
+                            <td>@ledger.Sum(l => l.CondoFees + l.ReserveFund + l.OtherCharges).ToString("C2")</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+            </MudCardContent>
+        </MudCard>
     </MudItem>
 
 </MudGrid>
 
-<MudPaper Class="pa-4">
-    <MudText Typo="Typo.h6">Owner Payment Status</MudText>
-    <MudSimpleTable Elevation="0">
-        <thead>
-            <tr>
-                <th>Unit</th>
-                <th>Owner</th>
-                <th>Status</th>
-                <th>Balance</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var owner in ledger)
-            {
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h6">Owner Payment Status</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudSimpleTable Elevation="0">
+            <thead>
                 <tr>
-                    <td>@owner.UnitNumber</td>
-                    <td>@owner.OwnerName</td>
-                    <td>@owner.AccountStatus</td>
-                    <td>@owner.Balance.ToString("C2")</td>
+                    <th>Unit</th>
+                    <th>Owner</th>
+                    <th>Status</th>
+                    <th>Balance</th>
                 </tr>
-            }
-        </tbody>
-    </MudSimpleTable>
-</MudPaper>
+            </thead>
+            <tbody>
+                @foreach (var owner in ledger)
+                {
+                    <tr>
+                        <td>@owner.UnitNumber</td>
+                        <td>@owner.OwnerName</td>
+                        <td>@owner.AccountStatus</td>
+                        <td>@owner.Balance.ToString("C2")</td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudCardContent>
+</MudCard>
