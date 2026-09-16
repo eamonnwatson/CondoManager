@@ -3,4 +3,4 @@ using MediatR;
 
 namespace CondoScope.Application.Owners.Queries.GetOwners;
 
-public record GetOwnerQuery() : IRequest<Result<IReadOnlyList<OwnerDTO>>>;
+public record GetOwnersQuery : IRequest<Result<IEnumerable<OwnerDto>>>;
