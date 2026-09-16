@@ -7,8 +7,6 @@ namespace CondoScope.Persistence.Repositories;
 
 internal class UnitRepository(AppDbContext dbContext) : BaseRepository, IUnitsRepository
 {
-    private readonly AppDbContext dbContext = dbContext;
-
     public Task<Result<Unit>> AddUnitAsync(Unit unit, CancellationToken token) =>
         ExecuteAsync(async () =>
         {
@@ -31,5 +29,13 @@ internal class UnitRepository(AppDbContext dbContext) : BaseRepository, IUnitsRe
             .Include(u => u.FeeCharges)
             .OrderBy(u => u.UnitNumber)
             .ToListAsync(token));
+
+    public Task<Result<Unit>> GetByIdWithDetailsAsync(Ulid unitId, CancellationToken token) =>
+        GetDataAsync(async () => await dbContext.Units
+                .Include(u => u.UnitOwners)
+                    .ThenInclude(uo => uo.Owner)
+                .Include(u => u.Payments)
+                .Include(u => u.FeeCharges)
+                .FirstOrDefaultAsync(u => u.Id == unitId, token), $"Unit with ID {unitId} not found.");
 
 }

@@ -6,11 +6,6 @@ namespace CondoScope.Persistence.Repositories;
 
 internal abstract class BaseRepository
 {
-    /// <summary>
-    /// Executes a database operation, returning the result wrapped in a <see cref="Result{T}"/>.
-    /// SQLite failures are mapped to <see cref="DatabaseError"/>, any other exception is mapped
-    /// to <see cref="UnexpectedAppError"/>.
-    /// </summary>
     protected static async Task<Result<T>> ExecuteAsync<T>(Func<Task<T>> operation)
     {
         try
@@ -24,11 +19,23 @@ internal abstract class BaseRepository
         }
     }
 
-    /// <summary>
-    /// Executes a database operation with no return value, returning a <see cref="Result"/>.
-    /// SQLite failures are mapped to <see cref="DatabaseError"/>, any other exception is mapped
-    /// to <see cref="UnexpectedAppError"/>.
-    /// </summary>
+    protected static async Task<Result<T>> GetDataAsync<T>(Func<Task<T?>> operation, string notFoundMessage)
+    {
+        try
+        {
+            var value = await operation().ConfigureAwait(false);
+            if (value is null)
+            {
+                return Result.Fail<T>(new NotFoundError(notFoundMessage));
+            }
+            return Result.Ok(value);
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail<T>(ToApplicationError(ex));
+        }
+    }
+
     protected static async Task<Result> ExecuteAsync(Func<Task> operation)
     {
         try

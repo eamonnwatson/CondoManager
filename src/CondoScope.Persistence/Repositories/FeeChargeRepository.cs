@@ -12,4 +12,4 @@ internal class FeeChargeRepository(AppDbContext dbContext) : BaseRepository, IFe
             .Include(fc => fc.Units)
             .OrderByDescending(fc => fc.DueDate)
             .ToListAsync(cancellationToken));
-}       
+}
