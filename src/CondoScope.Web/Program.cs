@@ -1,3 +1,4 @@
+using CondoScope.Application;
 using CondoScope.Application.Ledger.Queries.GetLedger;
 using CondoScope.Persistence;
 using CondoScope.Web.Components;
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetLedgerQuery).Assembly));
 
 var dbPath = builder.Configuration.GetConnectionString("CondoScopeDb") ?? Path.Combine(AppContext.BaseDirectory, "condoscope.db");
+
+builder.Services.AddApplication();
 
 builder.Services.AddPersistence($"Data Source={dbPath}");
 builder.Services.AddMudServices();
