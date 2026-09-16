@@ -65,8 +65,8 @@
             <MudCardContent>
                 <MudChart T="decimal" 
                           ChartType="ChartType.Pie" 
-                          ChartLabels="chartLabels" 
-                          ChartSeries="chartValues.AsChartDataSet()" 
+                          ChartLabels="ChartLabels" 
+                          ChartSeries="ChartValues.AsChartDataSet()" 
                           Width="100%" Height="300px" 
                           ChartOptions="chartOptions" />
             </MudCardContent>
@@ -126,7 +126,7 @@
                         <td>@owner.UnitNumber</td>
                         <td>@owner.OwnerName</td>
                         <td>@owner.AccountStatus</td>
-                        <td>@owner.Balance.ToString("C2")</td>
+                        <td class="text-right">@owner.Balance.ToString("C2")</td>
                     </tr>
                 }
             </tbody>

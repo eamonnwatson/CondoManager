@@ -1,4 +1,5 @@
 ﻿@page "/owners"
+@using CondoScope.Application.Owners
 @using CondoScope.Application.Owners.Queries.GetOwners
 @using MediatR
 
@@ -10,23 +11,18 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent>
-        <MudText Typo="Typo.body2" Class="pb-1"></MudText>
-        <MudTable Items="owners" Elevation="0" Class="primary-table">
-            <HeaderContent>
-                <MudTh>Unit</MudTh>
-                <MudTh>Owner</MudTh>
-                <MudTh>Address</MudTh>
-                <MudTh>Email</MudTh>
-                <MudTh>Phone</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd>@context.UnitNumber</MudTd>
-                <MudTd>@context.Name</MudTd>
-                <MudTd>@context.Address</MudTd>
-                <MudTd>@context.Email</MudTd>
-                <MudTd>@context.PhoneNumber</MudTd>
-            </RowTemplate>
-        </MudTable>
+        <MudText Typo="Typo.body2" Class="pb-1">Showing @owners.Count owners</MudText>
+
+        <MudDataGrid Items="owners" Elevation="0" Class="primary-table">
+            <Columns>
+                <PropertyColumn Property="x => x.UnitNumber" Title="Unit" InitialSortDirection="SortDirection.Ascending" />
+                <PropertyColumn Property="x => x.Name" Title="Owner" />
+                <PropertyColumn Property="x => x.Address" Title="Address" />
+                <PropertyColumn Property="x => x.Email" Title="Email" />
+                <PropertyColumn Property="x => x.PhoneNumber" Title="Phone" />
+            </Columns>
+        </MudDataGrid>
+
         <MudGrid>
             <MudItem xs="12" Class="d-flex justify-end">
                 <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Owner</MudButton>
@@ -39,11 +35,11 @@
     [Inject] private IDialogService DialogService { get; set; } = default!;
     [Inject] private IMediator Mediator { get; set; } = default!;
 
-    private IList<OwnerDTO> owners = default!;
+    private IList<OwnerDto> owners = default!;
 
     override protected async Task OnInitializedAsync()
     {
-        var ownerResult = await Mediator.Send(new GetOwnerQuery());
+        var ownerResult = await Mediator.Send(new GetOwnersQuery());
         owners = ownerResult.Value.ToList();
     }
 

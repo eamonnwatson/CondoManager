@@ -1,0 +1,120 @@
+﻿@page "/unit-statement"
+@using CondoScope.Application.Statement
+@using CondoScope.Application.Statement.Queries
+@using CondoScope.Application.Units
+@using CondoScope.Application.Units.Queries.GetUnits
+@using MediatR
+
+@inject IMediator Mediator
+@inject ISnackbar Snackbar
+
+<MudCard>
+    <MudCardHeader Class="primary-card">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Unit Statement</MudText>
+            <MudText Typo="Typo.body1">Owner account statement</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudButton StartIcon="@Icons.Material.Filled.Print" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" Disabled="@(statement is null)">Print Statement</MudButton>
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent>
+
+        <MudStack Row="true">
+            <MudSelect @bind-Value="selectedUnit" @bind-Value:after="OnUnitChanged" Label="Select Unit" Variant="Variant.Outlined">
+                @foreach (var unit in units)
+                {
+                    <MudSelectItem T="string" Value="@unit.UnitId">@unit.UnitNumber</MudSelectItem>
+                }
+            </MudSelect>
+        </MudStack>
+
+        @if (statement is null)
+        {
+            <MudAlert Severity="Severity.Warning" Class="mt-4">Please select a unit to view the statement.</MudAlert>
+        }
+        else
+        {
+
+            <MudGrid>
+                <MudItem md="6">
+                    <MudText Typo="Typo.body1" Class="primary-header">Owner</MudText>
+                    <MudText Typo="Typo.body2">
+                        @statement?.OwnerName<br />
+                        @statement?.Address<br />
+                        @statement?.EmailAddress
+                    </MudText>
+                </MudItem>
+                <MudItem md="6">
+                    <MudText Align="Align.Right" Typo="Typo.body1" Class="primary-header">Statement As Of</MudText>
+                    <MudText Align="Align.Right" Typo="Typo.body2">@DateTime.Today.ToString("MMMM dd, yyyy")</MudText>
+                </MudItem>
+            </MudGrid>
+
+            <MudText Typo="Typo.h6" Class="my-4 primary-header">Account Summary</MudText>
+
+            <MudSimpleTable Elevation="0" Class="no-border-table">
+                <tbody>
+                    <tr>
+                        <td>Current Balance</td>
+                        <td class="text-right">@statement?.CurrentBalance.ToString("C2")</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td class="text-right">@statement?.AccountStatus</td>
+                    </tr>
+                    <tr>
+                        <td>Last Payment</td>
+                        <td class="text-right">@statement?.AccountActivities.Where(a => a.Payment.HasValue).OrderByDescending(a => a.ActivityDate).FirstOrDefault()?.ActivityDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                    <tr>
+                        <td>Last Payment Amount</td>
+                        <td class="text-right">@statement?.AccountActivities.Where(a => a.Payment.HasValue).OrderByDescending(a => a.ActivityDate).FirstOrDefault()?.Payment?.ToString("C2")</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+
+            <MudText Typo="Typo.h6" Class="mt-4 primary-header">Account Summary</MudText>
+            <MudText Typo="Typo.body2" Class="pb-1">All charges and payments</MudText>
+
+            <MudDataGrid Items="statement?.AccountActivities" Elevation="0" Class="primary-table" SortMode="SortMode.None">
+                <Columns>
+                    <PropertyColumn Property="@(x => x.ActivityDate.ToString("yyyy-MM-dd"))" Title="Activity Date" />
+                    <PropertyColumn Property="x => x.Description" Title="Description" />
+                    <PropertyColumn Property="x => x.Charge" Title="Charge" Format="C2" CellClass="text-right" />
+                    <PropertyColumn Property="x => x.Payment" Title="Payment" Format="C2" CellClass="text-right" />
+                    <PropertyColumn Property="x => x.Balance" Title="Balance" Format="C2" CellClass="text-right" />
+                </Columns>
+            </MudDataGrid>
+
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    private List<UnitDto> units = [];
+    private string selectedUnit = string.Empty;
+
+    private StatementDto? statement;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var unitResult = await Mediator.Send(new GetUnitsQuery());
+        if (unitResult.IsSuccess)
+            units = unitResult.Value.ToList();
+        else
+            Snackbar.Add("Failed to load units", Severity.Error);
+
+    }
+
+    private async Task OnUnitChanged()
+    {
+        var statementResult = await Mediator.Send(new GetStatementQuery(selectedUnit));
+        if (statementResult.IsSuccess)
+            statement = statementResult.Value;
+        else
+            Snackbar.Add("Failed to load statement", Severity.Error);
+    
+    }
+}

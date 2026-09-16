@@ -1,5 +1,7 @@
 ﻿@page "/fee-schedule"
+@using CondoScope.Application.FeeCharges
 @using CondoScope.Application.FeeCharges.Queries.GetFeeCharges
+@using CondoScope.Domain.Enums
 @using MediatR
 
 <MudCard>
@@ -10,26 +12,21 @@
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent>
-        <MudText Typo="Typo.body2" Class="pb-1"></MudText>
-        <MudTable Items="feeCharges" Elevation="0" Class="primary-table">
-            <HeaderContent>
-                <MudTh>Due Date</MudTh>
-                <MudTh>Description</MudTh>
-                <MudTh>Category</MudTh>
-                <MudTh>Applies To</MudTh>
-                <MudTh>Amount</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd>@context.DueDate</MudTd>
-                <MudTd>@context.Description</MudTd>
-                <MudTd>@context.Category</MudTd>
-                <MudTd>@context.AppliesTo</MudTd>
-                <MudTd>@context.Amount</MudTd>
-            </RowTemplate>
+        <MudText Typo="Typo.body2" Class="pb-1">Showing @feeCharges.Count fee charges</MudText>
+
+        <MudDataGrid Items="feeCharges" Elevation="0" Class="primary-table">
+            <Columns>
+                <PropertyColumn Property="x => x.DueDate" Title="Due Date" InitialSortDirection="SortDirection.Descending" />
+                <PropertyColumn Property="x => x.Description" Title="Description" />
+                <PropertyColumn Property="x => x.Category" Title="Category" />
+                <PropertyColumn Property="x => GetAppliesToString(x)" Title="Applies To" />
+                <PropertyColumn Property="x => x.Amount" Title="Amount" />
+            </Columns>
             <PagerContent>
-                <MudTablePager />
+                <MudDataGridPager />
             </PagerContent>
-        </MudTable>
+        </MudDataGrid>
+
         <MudGrid>
             <MudItem xs="12" Class="d-flex justify-end">
                 <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Fee Charge</MudButton>
@@ -50,4 +47,11 @@
         feeCharges = feeChargeResult.Value.ToList();
     }
 
+    private string GetAppliesToString(FeeChargeDto feeCharge)
+    {
+        if (feeCharge.Scope == ChargeScope.AllUnits)
+            return "All Units";
+
+        return string.Join(", ", feeCharge.Units.Select(u => u.UnitNumber).Order());
+    }
 }

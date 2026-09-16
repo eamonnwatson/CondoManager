@@ -1,6 +1,6 @@
 ﻿@page "/units"
+@using CondoScope.Application.Units
 @using CondoScope.Application.Units.Commands
-@using CondoScope.Application.Units.Queries
 @using CondoScope.Application.Units.Queries.GetUnits
 @using MediatR
 
@@ -13,18 +13,15 @@
     </MudCardHeader>
     <MudCardContent>
         <MudText Typo="Typo.body2" Class="pb-1">Showing @units.Count units</MudText>
-        <MudTable Items="units" Elevation="0" Class="primary-table">
-            <HeaderContent>
-                <MudTh>Unit Number</MudTh>
-                <MudTh>Address</MudTh>
-                <MudTh>Current Owner</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd>@context.UnitNumber</MudTd>
-                <MudTd>@context.Address</MudTd>
-                <MudTd>@context.CurrentOwnerName</MudTd>
-            </RowTemplate>
-        </MudTable>
+
+        <MudDataGrid Items="units" Elevation="0" Class="primary-table">
+            <Columns>
+                <PropertyColumn Property="x => x.UnitNumber" Title="Unit Number" InitialSortDirection="SortDirection.Ascending" />
+                <PropertyColumn Property="x => x.Address" Title="Address" />
+                <PropertyColumn Property="x => x.CurrentOwnerName" Title="Current Owner" />
+            </Columns>
+        </MudDataGrid>
+
         <MudGrid>
             <MudItem xs="12" Class="d-flex justify-end">
                 <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OpenCreateDialog">Add Unit</MudButton>
