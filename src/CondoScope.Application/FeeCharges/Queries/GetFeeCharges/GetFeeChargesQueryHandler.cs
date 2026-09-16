@@ -1,25 +1,14 @@
-﻿using CondoScope.Application.Common;
-using CondoScope.Application.Common.Interfaces;
+﻿using CondoScope.Application.Common.Interfaces;
+using CondoScope.Application.Common.Mapping;
 using FluentResults;
+using FluentResults.Extensions;
 using MediatR;
 
 namespace CondoScope.Application.FeeCharges.Queries.GetFeeCharges;
 
-public class GetFeeChargesQueryHandler(IFeeChargeRepository feeChargeRepository) : IRequestHandler<GetFeeChargesQuery, Result<IReadOnlyList<FeeChargeDto>>>
+internal class GetFeeChargesQueryHandler(IFeeChargeRepository feeChargeRepository, IMapper mapper) : IRequestHandler<GetFeeChargesQuery, Result<IEnumerable<FeeChargeDto>>>
 {
-    private readonly IFeeChargeRepository feeChargeRepository = feeChargeRepository;
-
-    public async Task<Result<IReadOnlyList<FeeChargeDto>>> Handle(GetFeeChargesQuery request, CancellationToken cancellationToken)
-    {
-
-        return await feeChargeRepository.GetAllAsync(cancellationToken)
-            .MapAsync(a => (IReadOnlyList<FeeChargeDto>)a.Select(fc => new FeeChargeDto(
-                Id: fc.Id.ToString(), 
-                DueDate: fc.DueDate, 
-                Description: fc.Description, 
-                Category: fc.Category.ToString(), 
-                AppliesTo: fc.Scope == Domain.Enums.ChargeScope.AllUnits ? "All Units" : string.Join(", ", fc.Units.Select(u => u.UnitNumber)), 
-                Amount: fc.Amount)).ToList().AsReadOnly());
-
-    }
+    public async Task<Result<IEnumerable<FeeChargeDto>>> Handle(GetFeeChargesQuery request, CancellationToken cancellationToken) =>
+        await feeChargeRepository.GetAllAsync(cancellationToken)
+            .Map(mapper.Map<FeeChargeDto>);
 }

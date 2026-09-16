@@ -1,5 +1,4 @@
-﻿using CondoScope.Application.Units.Queries;
-using FluentResults;
+﻿using FluentResults;
 using MediatR;
 
 namespace CondoScope.Application.Units.Commands;
