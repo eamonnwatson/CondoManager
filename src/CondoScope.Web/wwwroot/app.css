@@ -76,3 +76,18 @@ h1:focus {
 .mud-simple-table thead th {
     background-color: var(--mud-palette-info);
 }
+
+.primary-header {
+    color: #2563EB;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+
+.no-border-table table * tr > td, 
+.no-border-table table * tr th {
+    padding:1px !important;
+    border-bottom: 0px !important;
+}
