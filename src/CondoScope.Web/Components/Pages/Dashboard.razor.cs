@@ -16,10 +16,10 @@ public partial class Dashboard
     protected string[] ChartLabels => ["Collected", "Outstanding"];
 
     private List<LedgerDTO> ledger = [];
-    private int ledgerCount;
-    private decimal totalCollected;
-    private decimal totalFees;
-    private decimal collectionPercentage;
+    protected int ledgerCount;
+    protected decimal totalCollected;
+    protected decimal totalFees;
+    protected decimal collectionPercentage;
 
     private readonly PieChartOptions chartOptions = new() { ChartPalette = ["#4caf50", "#f44336"] };
 
