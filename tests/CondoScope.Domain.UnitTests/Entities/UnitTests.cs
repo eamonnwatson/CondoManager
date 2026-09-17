@@ -33,7 +33,7 @@ public class UnitTests
     public void Create_WithNullAddress_ReturnsSuccessResult()
     {
         // Act
-        var result = DomainEntities.Unit.Create("101", null, false, "creator");
+        var result = DomainEntities.Unit.Create("101", string.Empty, false, "creator");
 
         // Assert
         Assert.IsTrue(result.IsSuccess);
