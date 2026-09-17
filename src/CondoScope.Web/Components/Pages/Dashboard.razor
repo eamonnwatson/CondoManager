@@ -116,7 +116,7 @@
                     <th>Unit</th>
                     <th>Owner</th>
                     <th>Status</th>
-                    <th>Balance</th>
+                    <th class="text-right">Balance</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,7 +125,7 @@
                     <tr>
                         <td>@owner.UnitNumber</td>
                         <td>@owner.OwnerName</td>
-                        <td>@owner.AccountStatus</td>
+                        <td>@GetAccountStatus(owner.AccountStatus)</td>
                         <td class="text-right">@owner.Balance.ToString("C2")</td>
                     </tr>
                 }

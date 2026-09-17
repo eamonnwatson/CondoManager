@@ -2,7 +2,7 @@
 
 namespace CondoScope.Application.Common.Mapping;
 
-internal interface IMapper
+public interface IMapper
 {
     TDestination Map<TDestination>(object source);
     IEnumerable<TDestination> Map<TDestination>(IEnumerable source);

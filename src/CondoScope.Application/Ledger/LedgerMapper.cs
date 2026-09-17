@@ -1,5 +1,6 @@
 ﻿using CondoScope.Application.Common.Mapping;
 using CondoScope.Domain.Entities;
+using CondoScope.Domain.Enums;
 
 namespace CondoScope.Application.Ledger;
 
@@ -8,6 +9,15 @@ internal class LedgerMapper : IMapModule
     public void RegisterMaps(IMapper mapper)
     {
         mapper.Register<Unit, LedgerDTO>(MapUnitDetailsToLedger);
+
+        mapper.Register<AccountStatus, string>(status => status switch
+        {
+            AccountStatus.Credit => "Credit",
+            AccountStatus.PaidInFull => "Paid",
+            AccountStatus.Outstanding => "Outstanding",
+            _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+        });
+
     }
 
     private LedgerDTO MapUnitDetailsToLedger(Unit unit)

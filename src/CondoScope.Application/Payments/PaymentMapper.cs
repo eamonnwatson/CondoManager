@@ -1,6 +1,7 @@
 ﻿using CondoScope.Application.Common.Mapping;
 using CondoScope.Application.Units;
 using CondoScope.Domain.Entities;
+using CondoScope.Domain.Enums;
 
 namespace CondoScope.Application.Payments;
 
@@ -18,5 +19,14 @@ internal class PaymentMapper : IMapModule
             Reference: payment.Reference ?? string.Empty,
             Notes: payment.Notes ?? string.Empty));
 
+        mapper.Register<PaymentMethod, string>(method => method switch
+            {
+                PaymentMethod.Cash => "Cash",
+                PaymentMethod.BankDraft => "Bank Draft",
+                PaymentMethod.Cheque => "Cheque",
+                PaymentMethod.ETransfer => "E-Transfer",
+                PaymentMethod.Other => "Other",
+                _ => throw new ArgumentOutOfRangeException(nameof(method), method, null)
+            });
     }
 }

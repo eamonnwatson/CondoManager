@@ -1,3 +1,4 @@
+using CondoScope.Application.Common.Mapping;
 using CondoScope.Application.FeeCharges;
 using CondoScope.Application.FeeCharges.Commands.CreateFeeCharge;
 using CondoScope.Application.FeeCharges.Queries.GetFeeCharges;
@@ -10,6 +11,7 @@ using CondoScope.Web.Components.Dialogs.Models;
 using CondoScope.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MudBlazor;
 
 namespace CondoScope.Web.Components.Pages;
@@ -19,6 +21,7 @@ public partial class FeeCharges
     [Inject] private IDialogService DialogService { get; set; } = default!;
     [Inject] internal IMediator Mediator { get; set; } = default!;
     [Inject] internal ISnackbar Snackbar { get; set; } = default!;
+    [Inject] internal IMapper Mapper { get; set; } = default!;
 
     private List<FeeChargeDto> feeCharges = default!;
 
@@ -81,5 +84,7 @@ public partial class FeeCharges
 
     }
 
+    private string GetCategory(ChargeCategory category) =>
+        Mapper.Map<string>(category);
 
 }

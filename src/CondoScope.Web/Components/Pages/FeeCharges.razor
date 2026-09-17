@@ -1,4 +1,5 @@
 ﻿@page "/fee-schedule"
+@using CondoScope.Domain.Enums
 
 <MudCard>
     <MudCardHeader Class="primary-card">
@@ -17,7 +18,7 @@
             <Columns>
                 <PropertyColumn Property="x => x.DueDate" Title="Due Date" InitialSortDirection="SortDirection.Descending" />
                 <PropertyColumn Property="x => x.Description" Title="Description" />
-                <PropertyColumn Property="x => x.Category" Title="Category" />
+                <PropertyColumn Property="x => GetCategory(x.Category)" Title="Category" />
                 <PropertyColumn Property="x => GetAppliesToString(x)" Title="Applies To" />
                 <PropertyColumn Property="x => x.Amount" Title="Amount" Format="C2" CellClass="text-right" />
             </Columns>
@@ -28,4 +29,3 @@
 
     </MudCardContent>
 </MudCard>
-

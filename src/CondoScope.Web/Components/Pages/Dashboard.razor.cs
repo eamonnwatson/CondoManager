@@ -1,3 +1,4 @@
+using CondoScope.Application.Common.Mapping;
 using CondoScope.Application.Ledger;
 using CondoScope.Application.Ledger.Queries.GetLedger;
 using CondoScope.Web.Infrastructure;
@@ -10,7 +11,9 @@ namespace CondoScope.Web.Components.Pages;
 public partial class Dashboard
 {
     [Inject] private IMediator Mediator { get; set; } = default!;
-    [Inject] private ISnackbar Snackbar { get; set; } = default!;   
+    [Inject] private ISnackbar Snackbar { get; set; } = default!;
+    [Inject] private IMapper Mapper { get; set; } = default!;
+
 
     protected decimal[] ChartValues => [ledger.Sum(l => l.Payments), ledger.Where(l => l.Balance > 0).Sum(l => l.Balance)];
     protected string[] ChartLabels => ["Collected", "Outstanding"];
@@ -36,4 +39,7 @@ public partial class Dashboard
         collectionPercentage = totalCollected > 0 ? (totalCollected - totalFees) / totalCollected : 0;
 
     }
+
+    private string GetAccountStatus(AccountStatus status) =>
+        Mapper.Map<string>(status);
 }

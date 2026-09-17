@@ -13,9 +13,9 @@
     <MudCardContent>
         <MudText Typo="Typo.body2" Class="pb-1">Showing @owners.Count owners</MudText>
 
-        <MudDataGrid Items="owners" Elevation="0" Class="primary-table">
+        <MudDataGrid Items="owners" Elevation="0" Class="primary-table" SortMode="SortMode.None">
             <Columns>
-                <PropertyColumn Property="x => x.UnitNumber" Title="Unit" InitialSortDirection="SortDirection.Ascending" />
+                <PropertyColumn Property="x => x.UnitNumber" Title="Unit" />
                 <PropertyColumn Property="x => x.Name" Title="Owner" />
                 <PropertyColumn Property="x => x.Address" Title="Address" />
                 <PropertyColumn Property="x => x.Email" Title="Email" />
