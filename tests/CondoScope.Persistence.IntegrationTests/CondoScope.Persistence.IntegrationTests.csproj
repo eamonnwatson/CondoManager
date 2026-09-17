@@ -8,11 +8,12 @@
 	<IsPackable>false</IsPackable>
 	<LangVersion>latest</LangVersion>
 	<DisableTransitiveProjectReferences>false</DisableTransitiveProjectReferences>
+	<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
-	<PackageReference Include="MSTest" Version="4.4.1" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+	<PackageReference Include="MSTest" />
   </ItemGroup>
 
   <ItemGroup>
