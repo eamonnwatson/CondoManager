@@ -81,7 +81,7 @@ public class FeeChargeTests
     }
 
     [TestMethod]
-    public void Create_WithAllUnitsAndSingleUnitParameter_ReturnsFailure()
+    public void Create_WithAllUnitsAndSingleUnitParameter_ReturnsSuccessAndAssignsUnit()
     {
         // Arrange
         var unit = CreateUnit("101");
@@ -91,7 +91,9 @@ public class FeeChargeTests
             ChargeCategory.CondoFee, ChargeScope.AllUnits, unit, "user", [unit]);
 
         // Assert
-        Assert.IsTrue(result.IsFailed);
+        Assert.IsTrue(result.IsSuccess);
+        Assert.HasCount(1, result.Value.Units);
+        Assert.AreEqual(unit.Id, result.Value.Units.Single().Id);
     }
 
     [TestMethod]

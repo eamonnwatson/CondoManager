@@ -153,7 +153,7 @@ public class UnitTests
     }
 
     [TestMethod]
-    public void AssignOwner_WithSameEffectiveDateAsLastOwner_ClosesPreviousOwnerAndSucceeds()
+    public void AssignOwner_WithSameEffectiveDateAsLastOwner_ReturnsFailureWithInvalidEffectiveDate()
     {
         // Arrange
         var unit = CreateUnit();
@@ -163,14 +163,13 @@ public class UnitTests
 
         unit.AssignOwner(owner1, sameDate, "assigner1");
 
-        // Act & Assert
-        // Using a different date is required since SortedList keys must be unique;
-        // but same effective date as last owner should not be rejected by the date check
-        // since the failure condition is strictly greater-than.
-        var laterDate = sameDate;
-        laterDate = laterDate.AddDays(0);
+        // Act
+        var result = unit.AssignOwner(owner2, sameDate, "assigner2");
 
-        Assert.ThrowsExactly<ArgumentException>(() => unit.AssignOwner(owner2, sameDate, "assigner2"));
+        // Assert
+        Assert.IsTrue(result.IsFailed);
+        Assert.HasCount(1, unit.UnitOwners);
+        Assert.IsInstanceOfType<InvalidEffectiveDate>(result.Errors[0]);
     }
 
     [TestMethod]
@@ -214,5 +213,76 @@ public class UnitTests
         // Assert
         Assert.IsTrue(result.IsSuccess);
         Assert.HasCount(2, unit.UnitOwners);
+    }
+
+    [TestMethod]
+    public void CurrentOwner_WhenNoOwnersAssigned_ReturnsNull()
+    {
+        // Arrange
+        var unit = CreateUnit();
+
+        // Act
+        var currentOwner = unit.CurrentOwner;
+
+        // Assert
+        Assert.IsNull(currentOwner);
+    }
+
+    [TestMethod]
+    public void CurrentOwner_WhenOneOwnerAssigned_ReturnsThatOwner()
+    {
+        // Arrange
+        var unit = CreateUnit();
+        var owner = CreateOwner();
+        unit.AssignOwner(owner, new DateOnly(2024, 1, 1), "assigner1");
+
+        // Act
+        var currentOwner = unit.CurrentOwner;
+
+        // Assert
+        Assert.AreEqual(owner, currentOwner);
+    }
+
+    [TestMethod]
+    public void CurrentOwner_WhenMultipleOwnersAssigned_ReturnsLastOwner()
+    {
+        // Arrange
+        var unit = CreateUnit();
+        var owner1 = CreateOwner("Owner1");
+        var owner2 = CreateOwner("Owner2");
+        unit.AssignOwner(owner1, new DateOnly(2024, 1, 1), "assigner1");
+        unit.AssignOwner(owner2, new DateOnly(2024, 6, 1), "assigner2");
+
+        // Act
+        var currentOwner = unit.CurrentOwner;
+
+        // Assert
+        Assert.AreEqual(owner2, currentOwner);
+    }
+
+    [TestMethod]
+    public void Payments_WhenNoPaymentsAdded_ReturnsEmptyCollection()
+    {
+        // Arrange
+        var unit = CreateUnit();
+
+        // Act
+        var payments = unit.Payments;
+
+        // Assert
+        Assert.IsEmpty(payments);
+    }
+
+    [TestMethod]
+    public void FeeCharges_WhenNoFeeChargesAdded_ReturnsEmptyCollection()
+    {
+        // Arrange
+        var unit = CreateUnit();
+
+        // Act
+        var feeCharges = unit.FeeCharges;
+
+        // Assert
+        Assert.IsEmpty(feeCharges);
     }
 }

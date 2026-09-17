@@ -8,6 +8,18 @@ public class BaseAuditableEntityTests
     private sealed class TestEntity(Ulid id, DateTime createdAt, string createdBy)
         : BaseAuditableEntity(id, createdAt, createdBy);
 
+    private sealed class ParameterlessTestEntity : BaseAuditableEntity;
+
+    [TestMethod]
+    public void Constructor_Parameterless_SetsDefaultValues()
+    {
+        var entity = new ParameterlessTestEntity();
+
+        Assert.AreEqual(default(Ulid), entity.Id);
+        Assert.AreEqual(default(DateTime), entity.CreatedAtUtc);
+        Assert.IsNull(entity.CreatedBy);
+    }
+
     [TestMethod]
     public void Equals_OtherIsNull_ReturnsFalse()
     {

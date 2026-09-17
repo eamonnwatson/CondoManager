@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CondoScope.Domain\CondoScope.Domain.csproj" />
+    <ProjectReference Include="..\..\src\CondoScope.Application\CondoScope.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
