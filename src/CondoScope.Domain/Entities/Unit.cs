@@ -46,11 +46,8 @@ public class Unit : BaseAuditableEntity
         if (unitOwners.Count > 0)
         {
             var lastOwner = unitOwners[^1];
-            if (lastOwner.EffectiveFrom > effectiveDate)
+            if (lastOwner.EffectiveFrom >= effectiveDate)
                 return Result.Fail(new InvalidEffectiveDate(effectiveDate));
-
-            if (lastOwner.EffectiveFrom == effectiveDate)
-                throw new ArgumentException($"An item with the same key has already been added. Key: {effectiveDate}", nameof(effectiveDate));
 
             if (lastOwner.EffectiveTo is null)
             {

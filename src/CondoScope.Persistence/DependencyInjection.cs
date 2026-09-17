@@ -25,6 +25,6 @@ public static class DependencyInjection
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         await dbContext.Database.MigrateAsync(cancellationToken);
-        await DebugDataSeeder.SeedAsync(dbContext, cancellationToken);
+        //await DebugDataSeeder.SeedAsync(dbContext, cancellationToken);
     }
 }

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="CondoScope.Domain.UnitTests" />
+    <InternalsVisibleTo Include="CondoScope.Persistence.UnitTests" />
   </ItemGroup>
 
 </Project>

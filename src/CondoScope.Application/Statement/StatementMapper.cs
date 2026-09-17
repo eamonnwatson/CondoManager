@@ -35,6 +35,7 @@ internal class StatementMapper : IMapModule
             var accountActivitiesWithBalance = payments.Concat(feeCharges)
                 .Where(activity => activity.ActivityDate <= today)
                 .OrderBy(activity => activity.ActivityDate)
+                .ThenBy(activity => activity.Payment.HasValue)
                 .Select(activity =>
                 {
                     balance += (activity.Charge ?? 0) - (activity.Payment ?? 0);
@@ -43,6 +44,7 @@ internal class StatementMapper : IMapModule
                 .ToList();
 
             return new StatementDto(
+                UnitNumber: unit.UnitNumber,
                 OwnerName: unit.CurrentOwner?.Name ?? "N/A",
                 Address: unit.Address,
                 EmailAddress: unit.CurrentOwner?.Email?.Value ?? "N/A",

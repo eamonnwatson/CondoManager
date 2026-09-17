@@ -3,6 +3,7 @@
 namespace CondoScope.Application.Statement;
 
 public record StatementDto(
+    string UnitNumber,
     string OwnerName,
     string Address,
     string EmailAddress,

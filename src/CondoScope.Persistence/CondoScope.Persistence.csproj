@@ -19,4 +19,8 @@
     <ProjectReference Include="..\CondoScope.Domain\CondoScope.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="CondoScope.Persistence.UnitTests" />
+  </ItemGroup>
+
 </Project>

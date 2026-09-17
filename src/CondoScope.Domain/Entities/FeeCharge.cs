@@ -44,9 +44,6 @@ public class FeeCharge : BaseAuditableEntity
             return feeCharge;
         }
 
-        if (unit is not null)
-            return Result.Fail("An all units fee charge cannot be created with a single assigned unit.");
-
         if (allUnits is null || allUnits.Count == 0)
             return Result.Fail("An all units fee charge must be assigned to at least one unit.");
 

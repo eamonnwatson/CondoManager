@@ -9,7 +9,10 @@
     <Project Path="src/CondoScope.Web/CondoScope.Web.csproj" Id="4d44fb3c-7c97-434e-8d7e-d5d21042f354" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/CondoScope.Application.UnitTests/CondoScope.Application.UnitTests.csproj" Id="57d1446b-0095-4dec-a60a-2070b11277fd" />
     <Project Path="tests/CondoScope.Domain.UnitTests/CondoScope.Domain.UnitTests.csproj" Id="83ba179e-e58d-4a2c-bf5e-775fa55e41ba" />
     <Project Path="tests/CondoScope.Persistence.IntegrationTests/CondoScope.Persistence.IntegrationTests.csproj" />
+    <Project Path="tests/CondoScope.Persistence.UnitTests/CondoScope.Persistence.UnitTests.csproj" Id="35803bae-72d6-426c-98d6-f8d26f802502" />
+    <Project Path="tests/CondoScope.Web.UnitTests/CondoScope.Web.UnitTests.csproj" Id="9bd2d982-f101-4fe8-86ca-3d4385b58db7" />
   </Folder>
 </Solution>
