@@ -9,6 +9,7 @@ public class Unit : BaseAuditableEntity
     private Unit()
     {
         UnitNumber = null!;
+        Address = null!;
     }
 
     private Unit(string unitNumber, string address, bool isActive, DateTime createdAt, string createdBy)
