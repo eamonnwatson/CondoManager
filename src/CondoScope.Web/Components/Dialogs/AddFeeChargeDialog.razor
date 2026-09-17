@@ -1,0 +1,99 @@
+﻿@using CondoScope.Application.FeeCharges
+@using CondoScope.Application.Units
+@using CondoScope.Domain.Enums
+<EditForm Model="@newFeeCharge" OnValidSubmit="CreateFeeCharge">
+    <DataAnnotationsValidator />
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">Add Fee Charge</MudText>
+        </TitleContent>
+        <DialogContent>
+
+            <MudDatePicker Label="Due Date"
+                           @bind-Date="newFeeCharge.DueDate"
+                           Variant="Variant.Outlined"
+                           DateFormat="yyyy-MM-dd"
+                           For="@(() => newFeeCharge.DueDate)"
+                           Required="true" />
+
+            <MudTextField Label="Description"
+                          @bind-Value="newFeeCharge.Description"
+                          Variant="Variant.Outlined"
+                          For="@(() => newFeeCharge.Description)"
+                          Required="true" />
+
+            <MudNumericField Label="Amount"
+                             @bind-Value="newFeeCharge.Amount"
+                             Variant="Variant.Outlined"
+                             For="@(() => newFeeCharge.Amount)"
+                             Required="true" 
+                             HideSpinButtons="true"
+                             Format="C2"
+                             Culture="@System.Globalization.CultureInfo.CurrentCulture" />
+
+            <MudSelect Label="Category"
+                       Clearable="true"
+                       Variant="Variant.Outlined"
+                       @bind-Value="newFeeCharge.Category"
+                       Required="true"
+                       Placeholder="Select Category">
+
+                @foreach (var category in Enum.GetValues(typeof(ChargeCategory)).Cast<ChargeCategory>())
+                {
+                    <MudSelectItem Value="@((int)category)">@category.ToString()</MudSelectItem>
+                }
+
+            </MudSelect>
+
+            <MudSelect Label="Scope"
+                       Clearable="true"
+                       Variant="Variant.Outlined"
+                       @bind-Value="newFeeCharge.Scope"
+                       Required="true"
+                       Placeholder="Select Scope">
+
+                @foreach (var scope in Enum.GetValues(typeof(ChargeScope)).Cast<ChargeScope>())
+                {
+                    <MudSelectItem Value="@((int)scope)">@scope.ToString()</MudSelectItem>
+                }
+
+            </MudSelect>
+
+            <MudSelect Label="Select Unit"
+                       Clearable="true"
+                       Variant="Variant.Outlined"
+                       @bind-Value="newFeeCharge.UnitId">
+
+                @foreach (var unit in Units)
+                {
+                    <MudSelectItem Value="@unit.UnitId">@unit.UnitNumber (@unit.Address)</MudSelectItem>
+                }
+
+            </MudSelect>
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Add</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private AddFeeChargeFormModel newFeeCharge = new AddFeeChargeFormModel();
+
+    [Parameter] public IEnumerable<UnitDto> Units { get; set; } = [];
+
+    private void CreateFeeCharge()
+    {
+        MudDialog.Close(DialogResult.Ok(newFeeCharge));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();        
+    }
+}

@@ -13,12 +13,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MudBlazor" Version="9.9.0" />
+    <PackageReference Include="MudBlazor" Version="9.10.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CondoScope.Application\CondoScope.Application.csproj" />
     <ProjectReference Include="..\CondoScope.Persistence\CondoScope.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CondoScope.Web.UnitTests" />
   </ItemGroup>
 
 </Project>

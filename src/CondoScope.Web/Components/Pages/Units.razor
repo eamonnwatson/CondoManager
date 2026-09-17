@@ -1,8 +1,4 @@
 ﻿@page "/units"
-@using CondoScope.Application.Units
-@using CondoScope.Application.Units.Commands
-@using CondoScope.Application.Units.Queries.GetUnits
-@using MediatR
 
 <MudCard>
     <MudCardHeader Class="primary-card">
@@ -10,6 +6,9 @@
             <MudText Typo="Typo.h4">Units</MudText>
             <MudText Typo="Typo.body1">Manage unit information for all condominium units.</MudText>
         </CardHeaderContent>
+        <CardHeaderActions>
+            <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OpenCreateDialog">Add Unit</MudButton>
+        </CardHeaderActions>
     </MudCardHeader>
     <MudCardContent>
         <MudText Typo="Typo.body2" Class="pb-1">Showing @units.Count units</MudText>
@@ -22,50 +21,6 @@
             </Columns>
         </MudDataGrid>
 
-        <MudGrid>
-            <MudItem xs="12" Class="d-flex justify-end">
-                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OpenCreateDialog">Add Unit</MudButton>
-            </MudItem>
-        </MudGrid>
     </MudCardContent>
 </MudCard>
 
-
-@code {
-
-    [Inject] private IDialogService DialogService { get; set; } = default!;
-    [Inject] private IMediator Mediator { get; set; } = default!;
-
-    private List<UnitDto> units = default!;
-
-    override protected async Task OnInitializedAsync()
-    {
-        var unitResult = await Mediator.Send(new GetUnitsQuery());
-        units = unitResult.Value.ToList();
-    }
-
-    private async Task OpenCreateDialog()
-    {
-        var options = new DialogOptions()
-        {
-            FullWidth = true,
-            MaxWidth = MaxWidth.Small
-        };
-
-        var dialog = await DialogService.ShowAsync<AddUnitDialog>(options);
-        var result = await dialog.Result;
-
-        if (result.Canceled)
-            return;
-
-        var newUnit = result.Data as AddUnitFormModel;
-        if (newUnit == null)
-            return;
-
-        var addResult = await Mediator.Send(new CreateUnitCommand(newUnit.UnitNumber, newUnit.Address));
-        if (addResult.IsSuccess)
-        {
-            units.Add(addResult.Value);
-        }
-    }
-}

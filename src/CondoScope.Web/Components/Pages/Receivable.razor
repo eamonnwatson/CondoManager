@@ -1,0 +1,27 @@
+﻿@page "/accounts-receivable"
+
+<MudCard>
+    <MudCardHeader Class="primary-card">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Accounts Receivable</MudText>
+            <MudText Typo="Typo.body1">Review owner balances, payments, and outstanding amounts.</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+
+        <MudDataGrid Items="ledger" Elevation="0" Class="primary-table" Dense="true">
+            <Columns>
+                <PropertyColumn Property="x => x.UnitNumber" Title="Unit" />
+                <PropertyColumn Property="x => x.OwnerName" Title="Owner" />
+                <PropertyColumn Property="x => x.CondoFees" Title="Fees" Format="C2" CellClass="text-right" />
+                <PropertyColumn Property="x => x.ReserveFund" Title="Reserve Fund" Format="C2" CellClass="text-right" />
+                <PropertyColumn Property="x => x.OtherCharges" Title="Other Charges" Format="C2" CellClass="text-right" />
+                <PropertyColumn Property="x => (x.CondoFees + x.ReserveFund + x.OtherCharges)" Title="Total Charges" Format="C2" CellClass="text-right" />
+                <PropertyColumn Property="x => x.Payments" Title="Payments" Format="C2" CellClass="text-right" />
+                <PropertyColumn Property="x => x.Balance" Title="Balance" Format="C2" CellClass="text-right" />
+                <PropertyColumn Property="x => x.AccountStatus" Title="Status" />
+            </Columns>
+        </MudDataGrid>
+
+    </MudCardContent>
+</MudCard>

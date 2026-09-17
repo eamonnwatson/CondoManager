@@ -1,5 +1,6 @@
 using CondoScope.Application.Ledger;
 using CondoScope.Application.Ledger.Queries.GetLedger;
+using CondoScope.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -9,6 +10,7 @@ namespace CondoScope.Web.Components.Pages;
 public partial class Dashboard
 {
     [Inject] private IMediator Mediator { get; set; } = default!;
+    [Inject] private ISnackbar Snackbar { get; set; } = default!;   
 
     protected decimal[] ChartValues => [ledger.Sum(l => l.Payments), ledger.Where(l => l.Balance > 0).Sum(l => l.Balance)];
     protected string[] ChartLabels => ["Collected", "Outstanding"];
@@ -24,12 +26,14 @@ public partial class Dashboard
     protected override async Task OnInitializedAsync()
     {
         var ledgerResult = await Mediator.Send(new GetLedgerQuery());
+        if (ledgerResult.ShowErrorsIfFailed(Snackbar))
+            return;
+
         ledger = ledgerResult.Value.ToList() ?? [];
         ledgerCount = ledger.Count;
         totalCollected = ledger.Sum(l => l.Payments);
         totalFees = ledger.Where(l => l.Balance > 0).Sum(l => l.Balance);
         collectionPercentage = totalCollected > 0 ? (totalCollected - totalFees) / totalCollected : 0;
 
-        await base.OnInitializedAsync();
     }
 }

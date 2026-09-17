@@ -1,7 +1,10 @@
 using CondoScope.Application;
 using CondoScope.Application.Ledger.Queries.GetLedger;
+using CondoScope.Application.Statement.Pdf;
+using CondoScope.Application.Statement.Queries;
 using CondoScope.Persistence;
 using CondoScope.Web.Components;
+using MediatR;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,5 +38,15 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapGet("/statement-pdf/{unitId}", async (string unitId, IMediator mediator, IStatementPdfGenerator pdfGenerator) =>
+{
+    var statementResult = await mediator.Send(new GetStatementQuery(unitId));
+    if (statementResult.IsFailed)
+        return Results.NotFound();
+
+    var pdfBytes = pdfGenerator.Generate(statementResult.Value, DateOnly.FromDateTime(DateTime.Today));
+    return Results.File(pdfBytes, "application/pdf");
+});
 
 app.Run();

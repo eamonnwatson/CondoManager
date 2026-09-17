@@ -1,7 +1,4 @@
 ﻿@page "/owners"
-@using CondoScope.Application.Owners
-@using CondoScope.Application.Owners.Queries.GetOwners
-@using MediatR
 
 <MudCard>
     <MudCardHeader Class="primary-card">
@@ -9,6 +6,9 @@
             <MudText Typo="Typo.h4">Owners</MudText>
             <MudText Typo="Typo.body1">Manage owner contact information for all condominium owners.</MudText>
         </CardHeaderContent>
+        <CardHeaderActions>
+            <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OpenCreateDialog">Add Owner</MudButton>
+        </CardHeaderActions>
     </MudCardHeader>
     <MudCardContent>
         <MudText Typo="Typo.body2" Class="pb-1">Showing @owners.Count owners</MudText>
@@ -23,24 +23,5 @@
             </Columns>
         </MudDataGrid>
 
-        <MudGrid>
-            <MudItem xs="12" Class="d-flex justify-end">
-                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Owner</MudButton>
-            </MudItem>
-        </MudGrid>
     </MudCardContent>
 </MudCard>
-
-@code {
-    [Inject] private IDialogService DialogService { get; set; } = default!;
-    [Inject] private IMediator Mediator { get; set; } = default!;
-
-    private IList<OwnerDto> owners = default!;
-
-    override protected async Task OnInitializedAsync()
-    {
-        var ownerResult = await Mediator.Send(new GetOwnersQuery());
-        owners = ownerResult.Value.ToList();
-    }
-
-}

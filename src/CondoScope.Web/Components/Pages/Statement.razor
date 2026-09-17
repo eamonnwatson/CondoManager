@@ -1,12 +1,5 @@
 ﻿@page "/unit-statement"
-@using CondoScope.Application.Statement
-@using CondoScope.Application.Statement.Queries
-@using CondoScope.Application.Units
-@using CondoScope.Application.Units.Queries.GetUnits
-@using MediatR
 
-@inject IMediator Mediator
-@inject ISnackbar Snackbar
 
 <MudCard>
     <MudCardHeader Class="primary-card">
@@ -15,7 +8,7 @@
             <MudText Typo="Typo.body1">Owner account statement</MudText>
         </CardHeaderContent>
         <CardHeaderActions>
-            <MudButton StartIcon="@Icons.Material.Filled.Print" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" Disabled="@(statement is null)">Print Statement</MudButton>
+            <MudButton StartIcon="@Icons.Material.Filled.Print" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" Disabled="@(statement is null)" OnClick="PrintStatement">Print Statement</MudButton>
         </CardHeaderActions>
     </MudCardHeader>
     <MudCardContent>
@@ -42,7 +35,8 @@
                     <MudText Typo="Typo.body2">
                         @statement?.OwnerName<br />
                         @statement?.Address<br />
-                        @statement?.EmailAddress
+                        @statement?.EmailAddress<br />
+                        @statement?.PhoneNumber
                     </MudText>
                 </MudItem>
                 <MudItem md="6">
@@ -90,31 +84,3 @@
         }
     </MudCardContent>
 </MudCard>
-
-@code {
-
-    private List<UnitDto> units = [];
-    private string selectedUnit = string.Empty;
-
-    private StatementDto? statement;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var unitResult = await Mediator.Send(new GetUnitsQuery());
-        if (unitResult.IsSuccess)
-            units = unitResult.Value.ToList();
-        else
-            Snackbar.Add("Failed to load units", Severity.Error);
-
-    }
-
-    private async Task OnUnitChanged()
-    {
-        var statementResult = await Mediator.Send(new GetStatementQuery(selectedUnit));
-        if (statementResult.IsSuccess)
-            statement = statementResult.Value;
-        else
-            Snackbar.Add("Failed to load statement", Severity.Error);
-    
-    }
-}

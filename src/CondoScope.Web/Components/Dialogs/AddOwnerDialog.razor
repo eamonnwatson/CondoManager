@@ -1,0 +1,73 @@
+﻿@using CondoScope.Application.Units
+<EditForm Model="@newOwner" OnValidSubmit="CreateOwner">
+    <DataAnnotationsValidator />
+    <MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Add Owner</MudText>
+    </TitleContent>
+    <DialogContent>
+
+            <MudTextField Label="Name" 
+                          @bind-Value="newOwner.Name" 
+                          Variant="Variant.Outlined" 
+                          For="@(() => newOwner.Name)" />
+
+            <MudTextField Label="Email Address" 
+                          InputType="InputType.Email"
+                          @bind-Value="newOwner.EmailAddress" 
+                          Variant="Variant.Outlined" 
+                          For="@(() => newOwner.EmailAddress)" />
+
+            <MudTextField Label="Phone Number" 
+                          Mask="@(new PatternMask("(000) 000-0000"))"
+                          InputType="InputType.Telephone"
+                          @bind-Value="newOwner.PhoneNumber" 
+                          Variant="Variant.Outlined" 
+                          For="@(() => newOwner.PhoneNumber)" />
+
+            <MudSelect Label="Select Unit" 
+                       Clearable="true" 
+                       Variant="Variant.Outlined" 
+                       @bind-Value="newOwner.UnitId">
+
+            @foreach (var unit in Units)
+            {
+                <MudSelectItem Value="@unit.UnitId">@unit.UnitNumber (@unit.Address)</MudSelectItem>
+            }
+
+            </MudSelect>
+
+            <MudDatePicker Label="Effective Date" 
+                           @bind-Date="newOwner.EffectiveDate" 
+                           Variant="Variant.Outlined"
+                           IsDateDisabledFunc="(date) => date > DateTime.Today"
+                           DateFormat="yyyy-MM-dd" 
+                           For="@(() => newOwner.EffectiveDate)"
+                           Required="@(!string.IsNullOrWhiteSpace(newOwner.UnitId))" />
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Add</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+</EditForm>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public IEnumerable<UnitDto> Units { get; set; } = [];
+
+    private AddOwnerFormModel newOwner = new AddOwnerFormModel();
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void CreateOwner(EditContext context)
+    {
+        MudDialog.Close(DialogResult.Ok(newOwner));
+    }
+
+}

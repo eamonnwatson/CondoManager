@@ -1,7 +1,4 @@
 ﻿@page "/payments"
-@using CondoScope.Application.Payments
-@using CondoScope.Application.Payments.Queries.GetPayments
-@using MediatR
 
 <MudCard>
     <MudCardHeader Class="primary-card">
@@ -9,6 +6,9 @@
             <MudText Typo="Typo.h4">Units</MudText>
             <MudText Typo="Typo.body1">Manage unit information for all condominium units.</MudText>
         </CardHeaderContent>
+        <CardHeaderActions>
+            <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OpenCreateDialog">Add Payment</MudButton>
+        </CardHeaderActions>
     </MudCardHeader>
     <MudCardContent>
         <MudText Typo="Typo.body2" Class="pb-1">Showing @payments.Count payments</MudText>
@@ -17,7 +17,7 @@
             <Columns>
                 <PropertyColumn Property="@(x => x.PaymentDate.ToString("yyyy-MM-dd"))" Title="Payment Date" SortBy="x => x.PaymentDate" InitialSortDirection="SortDirection.Descending" />
                 <PropertyColumn Property="x => x.Unit.UnitNumber" Title="Unit" />
-                <PropertyColumn Property="x => x.Amount" Title="Amount" />
+                <PropertyColumn Property="x => x.Amount" Title="Amount" Format="C2" CellClass="text-right" />
                 <PropertyColumn Property="x => x.PaymentMethod" Title="Payment Method" />
                 <PropertyColumn Property="x => x.Reference" Title="Reference" />
                 <PropertyColumn Property="x => x.Notes" Title="Notes" />
@@ -27,25 +27,6 @@
             </PagerContent>
         </MudDataGrid>
 
-        <MudGrid>
-            <MudItem xs="12" Class="d-flex justify-end">
-                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Payment</MudButton>
-            </MudItem>
-        </MudGrid>
     </MudCardContent>
 </MudCard>
 
-
-@code {
-    [Inject] private IDialogService DialogService { get; set; } = default!;
-    [Inject] private IMediator Mediator { get; set; } = default!;
-
-    private List<PaymentDto> payments = default!;
-
-    override protected async Task OnInitializedAsync()
-    {
-        var paymentResult = await Mediator.Send(new GetPaymentsQuery());
-        payments = paymentResult.Value.ToList();
-    }
-
-}

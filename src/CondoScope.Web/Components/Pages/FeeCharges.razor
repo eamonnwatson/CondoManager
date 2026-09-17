@@ -1,8 +1,4 @@
 ﻿@page "/fee-schedule"
-@using CondoScope.Application.FeeCharges
-@using CondoScope.Application.FeeCharges.Queries.GetFeeCharges
-@using CondoScope.Domain.Enums
-@using MediatR
 
 <MudCard>
     <MudCardHeader Class="primary-card">
@@ -10,6 +6,9 @@
             <MudText Typo="Typo.h4">Fee Schedule</MudText>
             <MudText Typo="Typo.body1">Configure recurring condo fees and special assessments.</MudText>
         </CardHeaderContent>
+        <CardHeaderActions>
+            <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success" OnClick="OpenCreateDialog">Add Fee Charge</MudButton>
+        </CardHeaderActions>
     </MudCardHeader>
     <MudCardContent>
         <MudText Typo="Typo.body2" Class="pb-1">Showing @feeCharges.Count fee charges</MudText>
@@ -20,38 +19,13 @@
                 <PropertyColumn Property="x => x.Description" Title="Description" />
                 <PropertyColumn Property="x => x.Category" Title="Category" />
                 <PropertyColumn Property="x => GetAppliesToString(x)" Title="Applies To" />
-                <PropertyColumn Property="x => x.Amount" Title="Amount" />
+                <PropertyColumn Property="x => x.Amount" Title="Amount" Format="C2" CellClass="text-right" />
             </Columns>
             <PagerContent>
                 <MudDataGridPager />
             </PagerContent>
         </MudDataGrid>
 
-        <MudGrid>
-            <MudItem xs="12" Class="d-flex justify-end">
-                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success">Add Fee Charge</MudButton>
-            </MudItem>
-        </MudGrid>
     </MudCardContent>
 </MudCard>
 
-@code {
-    [Inject] private IDialogService DialogService { get; set; } = default!;
-    [Inject] private IMediator Mediator { get; set; } = default!;
-
-    private List<FeeChargeDto> feeCharges = default!;
-
-    override protected async Task OnInitializedAsync()
-    {
-        var feeChargeResult = await Mediator.Send(new GetFeeChargesQuery());
-        feeCharges = feeChargeResult.Value.ToList();
-    }
-
-    private string GetAppliesToString(FeeChargeDto feeCharge)
-    {
-        if (feeCharge.Scope == ChargeScope.AllUnits)
-            return "All Units";
-
-        return string.Join(", ", feeCharge.Units.Select(u => u.UnitNumber).Order());
-    }
-}

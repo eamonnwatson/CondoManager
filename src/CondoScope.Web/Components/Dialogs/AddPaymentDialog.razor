@@ -1,0 +1,94 @@
+﻿@using CondoScope.Application.FeeCharges
+@using CondoScope.Application.Units
+@using CondoScope.Domain.Enums
+
+<EditForm Model="@newPayment" OnValidSubmit="CreatePayment">
+    <DataAnnotationsValidator />
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">Add Payment</MudText>
+        </TitleContent>
+        <DialogContent>
+
+            <MudDatePicker Label="Payment Date"
+                           @bind-Date="newPayment.PaymentDate"
+                           Variant="Variant.Outlined"
+                           DateFormat="yyyy-MM-dd"
+                           For="@(() => newPayment.PaymentDate)"
+                           Required="true" />
+
+            <MudNumericField Label="Amount"
+                             @bind-Value="newPayment.Amount"
+                             Variant="Variant.Outlined"
+                             For="@(() => newPayment.Amount)"
+                             Required="true" 
+                             HideSpinButtons="true"
+                             Format="C2"
+                             Culture="@System.Globalization.CultureInfo.CurrentCulture" />
+
+            <MudSelect Label="Unit"
+                          Clearable="true"
+                            Variant="Variant.Outlined"
+                            @bind-Value="newPayment.UnitId"
+                            Required="true"
+                            Placeholder="Select Unit">
+    
+                 @foreach (var unit in Units)
+                 {
+                      <MudSelectItem Value="@unit.UnitId">@unit.UnitNumber</MudSelectItem>
+                 }
+            </MudSelect>
+
+            <MudSelect Label="Payment Method"
+                       Clearable="true"
+                       Variant="Variant.Outlined"
+                       @bind-Value="newPayment.PaymentMethod"
+                       Required="true"
+                       Placeholder="Select Payment Method">
+
+                @foreach (var method in Enum.GetValues(typeof(PaymentMethod)).Cast<PaymentMethod>())
+                {
+                    <MudSelectItem Value="@((int?)method)">@method.ToString()</MudSelectItem>
+                }
+
+            </MudSelect>
+
+            <MudTextField Label="Reference Number"
+                          @bind-Value="newPayment.Reference"
+                          Variant="Variant.Outlined"
+                          For="@(() => newPayment.Reference)"
+                          Required="false" />
+
+            <MudTextField Label="Notes"
+                          @bind-Value="newPayment.Notes"
+                          Variant="Variant.Outlined"
+                          For="@(() => newPayment.Notes)"
+                          Required="false" />
+
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Add</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private AddPaymentFormModel newPayment = new AddPaymentFormModel();
+
+    [Parameter] public IEnumerable<UnitDto> Units { get; set; } = [];
+
+    private void CreatePayment()
+    {
+        MudDialog.Close(DialogResult.Ok(newPayment));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();        
+    }
+}
