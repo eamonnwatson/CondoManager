@@ -61,9 +61,9 @@ public partial class Payments
         var addResult = await Mediator.Send(
             new CreatePaymentCommand(
                 PaymentDate: DateOnly.FromDateTime(newPayment.PaymentDate ?? DateTime.Today),
-                UnitId: newPayment.UnitId,
+                UnitId: newPayment.UnitId ?? string.Empty,
                 Amount: newPayment.Amount ?? 0,
-                PaymentMethod: (PaymentMethod)newPayment.PaymentMethod,
+                PaymentMethod: (PaymentMethod)(newPayment.PaymentMethod ?? 0),
                 ReferenceNumber: newPayment.Reference,
                 Notes: newPayment.Notes));
 
