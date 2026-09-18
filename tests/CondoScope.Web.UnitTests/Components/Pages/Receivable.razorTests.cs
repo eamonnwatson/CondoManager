@@ -1,4 +1,5 @@
-﻿using CondoScope.Application.Ledger;
+﻿using CondoScope.Application.Common.Mapping;
+using CondoScope.Application.Ledger;
 using CondoScope.Application.Ledger.Queries.GetLedger;
 using CondoScope.Domain.Enums;
 using CondoScope.Web.Components.Pages;
@@ -50,12 +51,14 @@ public class ReceivableRazorTests
 
     private readonly Mock<IMediator> mediatorMock = new(MockBehavior.Strict);
     private readonly Mock<ISnackbar> snackbarMock = new(MockBehavior.Strict);
+    private readonly Mock<IMapper> mapperMock = new(MockBehavior.Loose);
 
     private TestRenderer CreateRenderer()
     {
         var services = new ServiceCollection();
         services.AddSingleton(mediatorMock.Object);
         services.AddSingleton(snackbarMock.Object);
+        services.AddSingleton(mapperMock.Object);
         return new TestRenderer(services.BuildServiceProvider());
     }
 
