@@ -1,14 +1,15 @@
 {
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-    "profiles": {
-      "http": {
-        "commandName": "Project",
-        "dotnetRunMessages": true,
-        "launchBrowser": true,
-        "applicationUrl": "http://localhost:5176",
-        "environmentVariables": {
-          "ASPNETCORE_ENVIRONMENT": "Development"
-        }
-      }
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DATABASE_PATH": ".\\condoscope.db"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5176"
     }
-  }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
+}

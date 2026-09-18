@@ -11,10 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetLedgerQuery).Assembly));
 
-var dbPath = builder.Configuration.GetConnectionString("CondoScopeDb") ?? Path.Combine(AppContext.BaseDirectory, "condoscope.db");
+var configuredPath =
+    builder.Configuration.GetValue<string>("DATABASE_PATH") ??
+    builder.Configuration.GetConnectionString("CondoScopeDb") ??
+    "condoscope.db";
+
+var dbPath = Path.GetFullPath(configuredPath, AppContext.BaseDirectory);
 
 builder.Services.AddApplication();
-
 builder.Services.AddPersistence($"Data Source={dbPath}");
 builder.Services.AddMudServices();
 
