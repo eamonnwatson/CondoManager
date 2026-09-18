@@ -6,8 +6,13 @@ using CondoScope.Persistence;
 using CondoScope.Web.Components;
 using MediatR;
 using MudBlazor.Services;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var culture = CultureInfo.GetCultureInfo("en-CA");
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetLedgerQuery).Assembly));
 

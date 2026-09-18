@@ -1,29 +1,25 @@
 <Project>
   <PropertyGroup>
-	<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
   <ItemGroup>
-	<!-- Domain Packages -->
-	<PackageVersion Include="FluentResults" Version="4.0.0" />
-	<PackageVersion Include="Ulid" Version="1.4.1" />
-
-	<!-- Application Packages -->
-	<PackageVersion Include="FluentValidation" Version="12.1.1" />
-	<PackageVersion Include="MediatR" Version="14.2.0" />
-	<PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
-	<PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.12" />
-	<PackageVersion Include="QuestPDF" Version="2026.9.0" />
-
-	<!-- Persistence Packages -->
-	<PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />
-	<PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
-
-	<!-- Web Packages -->
-	<PackageVersion Include="MudBlazor" Version="9.10.0" />
-
-	<!-- Test Packages -->
-	<PackageVersion Include="Moq" Version="4.20.72" />
-	<PackageVersion Include="MSTest" Version="4.4.1" />
+    <!-- Domain Packages -->
+    <PackageVersion Include="FluentResults" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1" />
+    <PackageVersion Include="Ulid" Version="1.4.1" />
+    <!-- Application Packages -->
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="MediatR" Version="14.2.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.12" />
+    <PackageVersion Include="QuestPDF" Version="2026.9.0" />
+    <!-- Persistence Packages -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+    <!-- Web Packages -->
+    <PackageVersion Include="MudBlazor" Version="9.10.0" />
+    <!-- Test Packages -->
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="MSTest" Version="4.4.1" />
   </ItemGroup>
 </Project>

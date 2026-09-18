@@ -1,6 +1,6 @@
 <Project>
   <!-- Treat all warnings as errors -->
   <PropertyGroup>
-	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>
