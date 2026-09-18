@@ -21,6 +21,8 @@ public class PaymentMapperTests
 
         public Func<Payment, PaymentDto>? RegisteredPaymentMapFunction { get; private set; }
 
+        public Func<PaymentMethod, string>? RegisteredPaymentMethodMapFunction { get; private set; }
+
         public UnitDto? NextUnitDtoResult { get; set; }
 
         public Unit? LastMappedUnit { get; private set; }
@@ -44,6 +46,9 @@ public class PaymentMapperTests
             if (mapFunction is Func<Payment, PaymentDto> paymentMapFunction)
                 RegisteredPaymentMapFunction = paymentMapFunction;
 
+            if (mapFunction is Func<PaymentMethod, string> paymentMethodMapFunction)
+                RegisteredPaymentMethodMapFunction = paymentMethodMapFunction;
+
             return this;
         }
     }
@@ -66,7 +71,7 @@ public class PaymentMapperTests
         sut.RegisterMaps(fakeMapper);
 
         // Assert
-        Assert.AreEqual(1, fakeMapper.RegisterCallCount);
+        Assert.AreEqual(2, fakeMapper.RegisterCallCount);
         Assert.IsNotNull(fakeMapper.RegisteredPaymentMapFunction);
     }
 
@@ -159,5 +164,40 @@ public class PaymentMapperTests
         // Assert
         Assert.AreEqual(string.Empty, dto.Reference);
         Assert.AreEqual("Some notes", dto.Notes);
+    }
+
+    [TestMethod]
+    [DataRow(PaymentMethod.Cash, "Cash")]
+    [DataRow(PaymentMethod.BankDraft, "Bank Draft")]
+    [DataRow(PaymentMethod.Cheque, "Cheque")]
+    [DataRow(PaymentMethod.ETransfer, "E-Transfer")]
+    [DataRow(PaymentMethod.Other, "Other")]
+    public void RegisterMaps_PaymentMethodMapFunction_MapsToExpectedString(PaymentMethod method, string expected)
+    {
+        // Arrange
+        var fakeMapper = new FakeMapper();
+        var sut = new PaymentMapper();
+        sut.RegisterMaps(fakeMapper);
+
+        // Act
+        var result = fakeMapper.RegisteredPaymentMethodMapFunction!(method);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void RegisterMaps_PaymentMethodMapFunctionWithUndefinedValue_ThrowsArgumentOutOfRangeException()
+    {
+        // Arrange
+        var fakeMapper = new FakeMapper();
+        var sut = new PaymentMapper();
+        sut.RegisterMaps(fakeMapper);
+        const PaymentMethod invalidMethod = (PaymentMethod)999;
+
+        // Act & Assert
+        var exception = Assert.ThrowsExactly<ArgumentOutOfRangeException>(
+            () => fakeMapper.RegisteredPaymentMethodMapFunction!(invalidMethod));
+        Assert.AreEqual("method", exception.ParamName);
     }
 }

@@ -90,9 +90,9 @@ public class StatementMapperTests
         // Assert
         Assert.AreEqual("303", dto.UnitNumber);
         Assert.AreEqual("789 Pine Rd", dto.Address);
-        Assert.AreEqual("N/A", dto.OwnerName);
-        Assert.AreEqual("N/A", dto.EmailAddress);
-        Assert.AreEqual("N/A", dto.PhoneNumber);
+        Assert.AreEqual(string.Empty, dto.OwnerName);
+        Assert.AreEqual(string.Empty, dto.EmailAddress);
+        Assert.AreEqual(string.Empty, dto.PhoneNumber);
         Assert.AreEqual(0m, dto.CurrentBalance);
         Assert.AreEqual(AccountStatus.PaidInFull, dto.AccountStatus);
         Assert.AreEqual(0, dto.AccountActivities.Count());
@@ -138,8 +138,8 @@ public class StatementMapperTests
 
         // Assert
         Assert.AreEqual("Jane Doe", dto.OwnerName);
-        Assert.AreEqual("N/A", dto.EmailAddress);
-        Assert.AreEqual("N/A", dto.PhoneNumber);
+        Assert.AreEqual(string.Empty, dto.EmailAddress);
+        Assert.AreEqual(string.Empty, dto.PhoneNumber);
     }
 
     [TestMethod]

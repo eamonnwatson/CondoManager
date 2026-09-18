@@ -27,6 +27,14 @@ public class FeeChargeMapperTests
             .Setup(m => m.Register(It.IsAny<Func<FeeCharge, FeeChargeDto>>()))
             .Returns(mapperMock.Object);
 
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeCategory, string>>()))
+            .Returns(mapperMock.Object);
+
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeScope, string>>()))
+            .Returns(mapperMock.Object);
+
         var mapper = new FeeChargeMapper();
 
         // Act
@@ -54,6 +62,14 @@ public class FeeChargeMapperTests
             .Returns(mapperMock.Object);
 
         mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeCategory, string>>()))
+            .Returns(mapperMock.Object);
+
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeScope, string>>()))
+            .Returns(mapperMock.Object);
+
+        mapperMock
             .Setup(m => m.Map<UnitDto>(feeCharge.Units))
             .Returns(expectedUnitDtos);
 
@@ -75,5 +91,126 @@ public class FeeChargeMapperTests
         CollectionAssert.AreEqual(expectedUnitDtos, dto.Units.ToList());
 
         mapperMock.Verify(m => m.Map<UnitDto>(feeCharge.Units), Times.Once);
+    }
+
+    [TestMethod]
+    [DataRow(ChargeCategory.CondoFee, "Condo Fee")]
+    [DataRow(ChargeCategory.ReserveFee, "Reserve Fund")]
+    [DataRow(ChargeCategory.OtherFee, "Other Fee")]
+    public void RegisterMaps_WhenCategoryFunctionInvoked_MapsCategoryToExpectedString(
+        ChargeCategory category, string expected)
+    {
+        // Arrange
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<FeeCharge, FeeChargeDto>>()))
+            .Returns(mapperMock.Object);
+
+        Func<ChargeCategory, string>? capturedFunction = null;
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeCategory, string>>()))
+            .Callback<Func<ChargeCategory, string>>(f => capturedFunction = f)
+            .Returns(mapperMock.Object);
+
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeScope, string>>()))
+            .Returns(mapperMock.Object);
+
+        var mapper = new FeeChargeMapper();
+        mapper.RegisterMaps(mapperMock.Object);
+
+        Assert.IsNotNull(capturedFunction);
+
+        // Act
+        var result = capturedFunction!(category);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void RegisterMaps_WhenCategoryFunctionInvokedWithUnknownValue_ThrowsArgumentOutOfRangeException()
+    {
+        // Arrange
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<FeeCharge, FeeChargeDto>>()))
+            .Returns(mapperMock.Object);
+
+        Func<ChargeCategory, string>? capturedFunction = null;
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeCategory, string>>()))
+            .Callback<Func<ChargeCategory, string>>(f => capturedFunction = f)
+            .Returns(mapperMock.Object);
+
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeScope, string>>()))
+            .Returns(mapperMock.Object);
+
+        var mapper = new FeeChargeMapper();
+        mapper.RegisterMaps(mapperMock.Object);
+
+        Assert.IsNotNull(capturedFunction);
+
+        // Act & Assert
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => capturedFunction!((ChargeCategory)999));
+    }
+
+    [TestMethod]
+    [DataRow(ChargeScope.AllUnits, "All Units")]
+    [DataRow(ChargeScope.SpecificUnit, "Specific Unit")]
+    public void RegisterMaps_WhenScopeFunctionInvoked_MapsScopeToExpectedString(
+        ChargeScope scope, string expected)
+    {
+        // Arrange
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<FeeCharge, FeeChargeDto>>()))
+            .Returns(mapperMock.Object);
+
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeCategory, string>>()))
+            .Returns(mapperMock.Object);
+
+        Func<ChargeScope, string>? capturedFunction = null;
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeScope, string>>()))
+            .Callback<Func<ChargeScope, string>>(f => capturedFunction = f)
+            .Returns(mapperMock.Object);
+
+        var mapper = new FeeChargeMapper();
+        mapper.RegisterMaps(mapperMock.Object);
+
+        Assert.IsNotNull(capturedFunction);
+
+        // Act
+        var result = capturedFunction!(scope);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void RegisterMaps_WhenScopeFunctionInvokedWithUnknownValue_ThrowsArgumentOutOfRangeException()
+    {
+        // Arrange
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<FeeCharge, FeeChargeDto>>()))
+            .Returns(mapperMock.Object);
+
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeCategory, string>>()))
+            .Returns(mapperMock.Object);
+
+        Func<ChargeScope, string>? capturedFunction = null;
+        mapperMock
+            .Setup(m => m.Register(It.IsAny<Func<ChargeScope, string>>()))
+            .Callback<Func<ChargeScope, string>>(f => capturedFunction = f)
+            .Returns(mapperMock.Object);
+
+        var mapper = new FeeChargeMapper();
+        mapper.RegisterMaps(mapperMock.Object);
+
+        Assert.IsNotNull(capturedFunction);
+
+        // Act & Assert
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => capturedFunction!((ChargeScope)999));
     }
 }
