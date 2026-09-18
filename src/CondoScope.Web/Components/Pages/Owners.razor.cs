@@ -70,4 +70,18 @@ public partial class Owners
         owners.Add(addResult.Value);
 
     }
+
+    private static string FormatPhoneNumber(string? phoneNumber)
+    {
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+            return string.Empty;
+
+        var digits = new string(phoneNumber.Where(char.IsDigit).ToArray());
+
+        if (digits.Length == 10)
+            return $"({digits[..3]}) {digits[3..6]}-{digits[6..]}";
+
+        return phoneNumber;
+    }
+
 }

@@ -78,24 +78,24 @@
             <MudCardHeader>
                 <MudText Typo="Typo.h6">Charges Assessed</MudText>
             </MudCardHeader>
-            <MudCardContent>
-                <MudSimpleTable Elevation="0">
+            <MudCardContent Class="d-flex">
+                <MudSimpleTable Elevation="0" Class="no-border-table align-self-center flex-grow-1">
                     <tbody>
                         <tr>
                             <td>Monthly Charges</td>
-                            <td>@ledger.Sum(l => l.CondoFees).ToString("C2")</td>
+                            <td class="text-right">@ledger.Sum(l => l.CondoFees).ToString("C2")</td>
                         </tr>
                         <tr>
                             <td>Reserve Charges</td>
-                            <td>@ledger.Sum(l => l.ReserveFund).ToString("C2")</td>
+                            <td class="text-right">@ledger.Sum(l => l.ReserveFund).ToString("C2")</td>
                         </tr>
                         <tr>
                             <td>Other Charges</td>
-                            <td>@ledger.Sum(l => l.OtherCharges).ToString("C2")</td>
+                            <td class="text-right">@ledger.Sum(l => l.OtherCharges).ToString("C2")</td>
                         </tr>
                         <tr>
-                            <td>Total Charges</td>
-                            <td>@ledger.Sum(l => l.CondoFees + l.ReserveFund + l.OtherCharges).ToString("C2")</td>
+                            <td style="font-size:20px;font-weight:bold;border-top: 4px solid #2563EB;">Total Charges</td>
+                            <td class="text-right" style="font-size:20px;font-weight:bold;border-top: 4px solid #2563EB;">@ledger.Sum(l => l.CondoFees + l.ReserveFund + l.OtherCharges).ToString("C2")</td>
                         </tr>
                     </tbody>
                 </MudSimpleTable>
@@ -125,7 +125,7 @@
                     <tr>
                         <td>@owner.UnitNumber</td>
                         <td>@owner.OwnerName</td>
-                        <td>@GetAccountStatus(owner.AccountStatus)</td>
+                        <td><MudChip T="string" Color="@GetColor(owner.AccountStatus)">@GetAccountStatus(owner.AccountStatus)</MudChip></td>
                         <td class="text-right">@owner.Balance.ToString("C2")</td>
                     </tr>
                 }

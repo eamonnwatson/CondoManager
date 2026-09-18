@@ -85,9 +85,12 @@ h1:focus {
     text-align: right !important;
 }
 
-
 .no-border-table table * tr > td, 
 .no-border-table table * tr th {
-    padding:1px !important;
     border-bottom: 0px !important;
+}
+
+.no-padding-table table * tr > td,
+.no-padding-table table * tr th {
+    padding: 1px !important;
 }

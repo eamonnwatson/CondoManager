@@ -18,8 +18,12 @@
                 <PropertyColumn Property="x => x.UnitNumber" Title="Unit" />
                 <PropertyColumn Property="x => x.Name" Title="Owner" />
                 <PropertyColumn Property="x => x.Address" Title="Address" />
-                <PropertyColumn Property="x => x.Email" Title="Email" />
-                <PropertyColumn Property="x => x.PhoneNumber" Title="Phone" />
+                <PropertyColumn Property="x => x.Email.ToString()" Title="Email" />
+                <TemplateColumn Title="Phone">
+                    <CellTemplate>
+                        @FormatPhoneNumber(context.Item.PhoneNumber)
+                    </CellTemplate>
+                </TemplateColumn>
             </Columns>
         </MudDataGrid>
 

@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/CondoScope.Application/CondoScope.Application.csproj" Id="aaedbd5a-2a82-4ad0-92a2-9d519714e2d3" />

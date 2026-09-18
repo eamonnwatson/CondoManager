@@ -47,15 +47,15 @@
 
             <MudText Typo="Typo.h6" Class="my-4 primary-header">Account Summary</MudText>
 
-            <MudSimpleTable Elevation="0" Class="no-border-table">
+            <MudSimpleTable Elevation="0" Class="no-border-table no-padding-table">
                 <tbody>
                     <tr>
                         <td>Current Balance</td>
-                        <td class="text-right">@statement?.CurrentBalance.ToString("C2")</td>
+                        <td class="text-right" style="font-size:18px;font-weight:bold;">@statement?.CurrentBalance.ToString("C2")</td>
                     </tr>
                     <tr>
                         <td>Status</td>
-                        <td class="text-right">@statement?.AccountStatus</td>
+                        <td class="text-right">@GetAccountStatus(statement?.AccountStatus)</td>
                     </tr>
                     <tr>
                         <td>Last Payment</td>
@@ -71,7 +71,7 @@
             <MudText Typo="Typo.h6" Class="mt-4 primary-header">Account Summary</MudText>
             <MudText Typo="Typo.body2" Class="pb-1">All charges and payments</MudText>
 
-            <MudDataGrid Items="statement?.AccountActivities" Elevation="0" Class="primary-table" SortMode="SortMode.None">
+            <MudDataGrid Items="statement?.AccountActivities" Elevation="0" Class="primary-table" SortMode="SortMode.None" Striped="true">
                 <Columns>
                     <PropertyColumn Property="@(x => x.ActivityDate.ToString("yyyy-MM-dd"))" Title="Activity Date" />
                     <PropertyColumn Property="x => x.Description" Title="Description" />

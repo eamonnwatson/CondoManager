@@ -42,4 +42,15 @@ public partial class Dashboard
 
     private string GetAccountStatus(AccountStatus status) =>
         Mapper.Map<string>(status);
+
+    private static Color GetColor(AccountStatus status)
+    {
+        return status switch
+        {
+            AccountStatus.PaidInFull => Color.Success,
+            AccountStatus.Credit => Color.Info,
+            AccountStatus.Outstanding => Color.Error,
+            _ => Color.Default
+        };
+    }
 }

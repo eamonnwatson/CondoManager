@@ -45,10 +45,10 @@ internal class StatementMapper : IMapModule
 
             return new StatementDto(
                 UnitNumber: unit.UnitNumber,
-                OwnerName: unit.CurrentOwner?.Name ?? "N/A",
+                OwnerName: unit.CurrentOwner?.Name ?? string.Empty,
                 Address: unit.Address,
-                EmailAddress: unit.CurrentOwner?.Email?.Value ?? "N/A",
-                PhoneNumber: unit.CurrentOwner?.Phone?.Value ?? "N/A",
+                EmailAddress: unit.CurrentOwner?.Email?.Value ?? string.Empty,
+                PhoneNumber: unit.CurrentOwner?.Phone?.Value ?? string.Empty,
                 CurrentBalance: balance,
                 AccountStatus: balance < 0 ? AccountStatus.Credit : balance > 0 ? AccountStatus.Outstanding : AccountStatus.PaidInFull,
                 AccountActivities: accountActivitiesWithBalance

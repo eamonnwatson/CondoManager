@@ -1,3 +1,5 @@
+using CondoScope.Application.Common.Mapping;
+using CondoScope.Application.Ledger;
 using CondoScope.Application.Statement;
 using CondoScope.Application.Statement.Queries;
 using CondoScope.Application.Units;
@@ -16,6 +18,7 @@ public partial class Statement
     [Inject] public ISnackbar Snackbar { get; set; } = default!;
     [Inject] public IJSRuntime JsRuntime { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] private IMapper Mapper { get; set; } = default!;
 
 
     private List<UnitDto> units = [];
@@ -52,5 +55,14 @@ public partial class Statement
 
         await JsRuntime.InvokeVoidAsync("open", pdfUrl, "_blank");
     }
+
+    private string GetAccountStatus(AccountStatus? status)
+    {
+        if (status is null)
+            return string.Empty;
+
+        return Mapper.Map<string>(status);
+    }
+        
 
 }
