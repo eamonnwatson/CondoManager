@@ -1,3 +1,4 @@
+using CondoScope.Application.Common.Mapping;
 using CondoScope.Application.Ledger;
 using CondoScope.Application.Ledger.Queries.GetLedger;
 using CondoScope.Web.Infrastructure;
@@ -13,7 +14,7 @@ public partial class Receivable
 
     [Inject] public IMediator Mediator { get; set; } = default!; 
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
-
+    [Inject] private IMapper Mapper { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -24,5 +25,8 @@ public partial class Receivable
         ledger = ledgerResult.Value.OrderBy(l => l.UnitNumber).ToList() ?? [];
 
     }
+
+    private string GetAccountStatus(AccountStatus status) =>
+        Mapper.Map<string>(status);
 
 }

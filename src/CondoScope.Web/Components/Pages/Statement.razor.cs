@@ -63,6 +63,20 @@ public partial class Statement
 
         return Mapper.Map<string>(status);
     }
-        
+    
+    private static Color GetColor(AccountStatus? status)
+    {
+        if (status is null)
+            return Color.Default;
+
+        return status switch
+        {
+            AccountStatus.Credit => Color.Info,
+            AccountStatus.PaidInFull => Color.Success,
+            AccountStatus.Outstanding => Color.Error,
+            _ => Color.Default
+        };
+
+    }
 
 }

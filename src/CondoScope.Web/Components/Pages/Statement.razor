@@ -51,7 +51,7 @@
                 <tbody>
                     <tr>
                         <td>Current Balance</td>
-                        <td class="text-right" style="font-size:18px;font-weight:bold;">@statement?.CurrentBalance.ToString("C2")</td>
+                        <td class="text-right"><MudText Typo="Typo.h4" HtmlTag="strong" Color="@GetColor(statement?.AccountStatus)">@statement?.CurrentBalance.ToString("C2")</MudText></td>
                     </tr>
                     <tr>
                         <td>Status</td>

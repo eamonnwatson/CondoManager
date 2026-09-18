@@ -19,7 +19,7 @@
                 <PropertyColumn Property="x => (x.CondoFees + x.ReserveFund + x.OtherCharges)" Title="Total Charges" Format="C2" CellClass="text-right" />
                 <PropertyColumn Property="x => x.Payments" Title="Payments" Format="C2" CellClass="text-right" />
                 <PropertyColumn Property="x => x.Balance" Title="Balance" Format="C2" CellClass="text-right" />
-                <PropertyColumn Property="x => x.AccountStatus" Title="Status" />
+                <PropertyColumn Property="x => GetAccountStatus(x.AccountStatus)" Title="Status" />
             </Columns>
         </MudDataGrid>
 
